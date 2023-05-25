@@ -6,7 +6,44 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
   </head>
   <body>
-    <h1><%= htmlWebpackPlugin.options.header %></h1>
-    <div>Where ideas are actualized</div>
+    <header class="header">
+      <div><%= htmlWebpackPlugin.options.header %>:</div>
+      <div>
+        "A list which represents tasks as they might or should be rather than as
+        they are."
+      </div>
+    </header>
+
+    <div class="sidebar">
+      <div class="sidebar-home">
+        <h2>Home</h2>
+        <div class="sb-home-container">
+          <ul>
+            <li><button class="sb-btns">Today</button></li>
+            <li><button class="sb-btns">Upcoming</button></li>
+            <li><button class="sb-btns">All Tasks</button></li>
+            <li><button class="sb-btns">Completed</button></li>
+            <li><button class="sb-btns">Trash</button></li>
+          </ul>
+        </div>
+      </div>
+      <div class="sidebar-projects">
+        <h2>
+          Projects
+          <button id="new-project-btn">Add Project</button>
+        </h2>
+        <div class="sb-projects-container">
+          <ul id="projects-list">
+            <li><button class="sb-btns projects">The Odin Project</button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="main"></div>
+    <div></div>
+
+    <footer>
+      <div>Made by Kuni <a href="https://github.com/kuneus"> @kuneus</a></div>
+    </footer>
   </body>
 </html>

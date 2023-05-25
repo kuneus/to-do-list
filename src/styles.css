@@ -1,0 +1,183 @@
+/* 
+Partial reset taken from 
+http://meyerweb.com/eric/tools/css/reset/ 
+*/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 16px;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+body {
+  display: grid;
+  grid-template-areas:
+    'sidebar header'
+    'sidebar main'
+    'footer main';
+  grid-template-rows: auto 91vh auto;
+  grid-template-columns: 1fr 4fr;
+  /* gap: 15px; */
+  background-image: url(images/bg.png);
+  background-size: cover;
+}
+
+.header {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-left: 30px;
+  grid-area: header;
+
+  /* background-color: rgba(231, 255, 250, 0.791); */
+}
+
+.header div:first-child {
+  font-size: 2rem;
+}
+
+.sidebar {
+  grid-area: sidebar;
+
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding-left: 20px;
+
+  background-color: rgba(231, 255, 250, 0.791);
+}
+
+/* headings for sidebar 'Home' and 'Projects' */
+.sidebar > div > h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  font-weight: 700;
+  padding-top: 20px;
+}
+
+/* Container for sidebar "Home" section */
+.sb-home-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* sidebar clicking elements */
+.sb-btns {
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 10px;
+  background-color: transparent;
+}
+
+.sb-btns:hover {
+  cursor: pointer;
+  background-color: #0000004b;
+}
+
+.sb-btns:focus {
+  background-color: #0000004b;
+  outline: none;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.main {
+  grid-area: main;
+  /* border: 1px solid #000; */
+  border-radius: 10px;
+  /* background-color: rgba(231, 255, 250, 0.791); */
+}
+
+footer {
+  grid-area: footer;
+  padding: 10px;
+
+  background-color: rgba(231, 255, 250, 0.791);
+}
