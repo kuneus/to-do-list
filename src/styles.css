@@ -92,6 +92,10 @@ video {
   vertical-align: baseline;
 }
 
+:root {
+  --container-bg: rgba(231, 255, 250, 0.791);
+}
+
 body {
   display: grid;
   grid-template-areas:
@@ -100,11 +104,11 @@ body {
     'footer main';
   grid-template-rows: auto 91vh auto;
   grid-template-columns: 1fr 4fr;
-  /* gap: 15px; */
   background-image: url(images/bg.png);
   background-size: cover;
 }
 
+/* **** HEADER **** */
 .header {
   font-size: 1.5rem;
   display: flex;
@@ -120,15 +124,19 @@ body {
   font-size: 2rem;
 }
 
+/* **** SIDEBAR **** */
 .sidebar {
   grid-area: sidebar;
-
   display: flex;
   flex-direction: column;
   gap: 40px;
-  padding-left: 20px;
+  background-color: var(--container-bg);
+  padding-top: 50px;
+}
 
-  background-color: rgba(231, 255, 250, 0.791);
+/* Indent sidebar column */
+.sb-columns {
+  padding-left: 20px;
 }
 
 /* headings for sidebar 'Home' and 'Projects' */
@@ -168,16 +176,94 @@ ul {
   list-style-type: none;
 }
 
-.main {
-  grid-area: main;
-  /* border: 1px solid #000; */
-  border-radius: 10px;
-  /* background-color: rgba(231, 255, 250, 0.791); */
+/* container for project list */
+.sb-projects-container {
+  height: 300px;
+  overflow-y: scroll;
 }
 
+/* container for new project buttons */
+.project-btn-cont {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+#new-project-btn {
+  width: 200px;
+  height: 30px;
+  margin: 0px;
+  border-radius: 15px;
+  border-style: none;
+  background-color: rgb(113, 198, 113);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.project-btns:hover,
+.project-btns:focus {
+  filter: brightness(120%);
+}
+
+/* hidden form for new project */
+#project-form-btns {
+  position: absolute;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Create and Cancel buttons */
+#project-form-btns > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* input for new project form */
+#project-form-btns > input {
+  height: 30px;
+  width: 200px;
+  border-radius: 10px;
+  text-indent: 5px;
+  border: none;
+}
+
+/* submit new project */
+#new-project-submit {
+  background-color: rgb(118, 118, 255);
+  border: none;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+/* cancel new project submission */
+#new-project-cancel {
+  background-color: rgb(255, 118, 118);
+  border: none;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+/* **** MAIN **** */
+.main {
+  grid-area: main;
+  margin: 50px;
+  background-color: var(--container-bg);
+  border-radius: 15px;
+  padding: 50px;
+}
+
+.task-line {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* **** FOOTER **** */
 footer {
   grid-area: footer;
   padding: 10px;
-
-  background-color: rgba(231, 255, 250, 0.791);
+  background-color: var(--container-bg);
 }

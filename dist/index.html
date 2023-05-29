@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
   </head>
   <body>
+    <!-- HEADER -->
     <header class="header">
       <div>IdeaList:</div>
       <div>
@@ -14,36 +15,83 @@
       </div>
     </header>
 
+    <!-- SIDEBAR -->
     <div class="sidebar">
-      <div class="sidebar-home">
+      <div class="sidebar-home sb-columns">
         <h2>Home</h2>
         <div class="sb-home-container">
           <ul>
-            <li><button class="sb-btns">Today</button></li>
-            <li><button class="sb-btns">Upcoming</button></li>
-            <li><button class="sb-btns">All Tasks</button></li>
-            <li><button class="sb-btns">Completed</button></li>
-            <li><button class="sb-btns">Trash</button></li>
+            <li><button class="sb-btns home-btns">Today</button></li>
+            <li><button class="sb-btns home-btns">Upcoming</button></li>
+            <li><button class="sb-btns home-btns">All Tasks</button></li>
+            <li><button class="sb-btns home-btns">Completed</button></li>
+            <li><button class="sb-btns home-btns">Trash</button></li>
           </ul>
         </div>
       </div>
-      <div class="sidebar-projects">
-        <h2>
-          Projects
-          <button id="new-project-btn">Add Project</button>
-        </h2>
+      <div class="sidebar-projects sb-columns">
+        <h2>Projects</h2>
         <div class="sb-projects-container">
-          <ul id="projects-list">
-            <li><button class="sb-btns projects">The Odin Project</button></li>
-          </ul>
+          <ul id="projects-list"></ul>
+        </div>
+      </div>
+      <div class="project-btn-cont">
+        <button id="new-project-btn" class="project-btns">
+          <svg
+            width="15px"
+            height="15px"
+            viewBox="0 -0.5 9 9"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <title>plus_mini [#1523]</title>
+            <desc>Created with Sketch.</desc>
+            <defs></defs>
+            <g
+              id="Page-1"
+              stroke="none"
+              stroke-width="1"
+              fill="none"
+              fill-rule="evenodd"
+            >
+              <g
+                id="Dribbble-Light-Preview"
+                transform="translate(-345.000000, -206.000000)"
+                fill="#000000"
+              >
+                <g id="icons" transform="translate(56.000000, 160.000000)">
+                  <polygon
+                    id="plus_mini-[#1523]"
+                    points="298 49 298 51 294.625 51 294.625 54 292.375 54 292.375 51 289 51 289 49 292.375 49 292.375 46 294.625 46 294.625 49"
+                  ></polygon>
+                </g>
+              </g>
+            </g>
+          </svg>
+          New Project
+        </button>
+        <div id="project-form-btns">
+          <input
+            type="text"
+            id="project-textfield"
+            placeholder="Project name"
+          />
+          <div>
+            <button id="new-project-submit" class="project-btns">Create</button>
+            <button id="new-project-cancel" class="project-btns">Cancel</button>
+          </div>
         </div>
       </div>
     </div>
-    <div class="main"></div>
+
+    <!-- MAIN -->
+    <div class="main" id="main-body"></div>
     <div></div>
 
+    <!-- FOOTER -->
     <footer>
       <div>Made by Kuni <a href="https://github.com/kuneus"> @kuneus</a></div>
     </footer>
-  <script defer src="main.js?d6d310790244ce816b04"></script></body>
+  <script defer src="main.js?cf224047d766416fb86c"></script></body>
 </html>
