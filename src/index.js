@@ -1,6 +1,7 @@
 import './styles.css';
 import { projectPages } from './projects';
 import { pageload } from './pageload';
+import { today } from './today';
 
 const projCont = document.getElementById('projects-list');
 const newProjectBtn = document.getElementById('new-project-btn');
@@ -10,6 +11,12 @@ const projectBtns = document.getElementsByClassName('project-btns');
 const projectTextField = document.getElementById('project-textfield');
 const projectListBtns = document.getElementsByClassName('projects');
 const homeBtns = document.getElementsByClassName('home-btns');
+const mainBody = document.getElementById('main-body');
+const mainHeader = document.getElementById('task-header');
+const taskForm = document.getElementById('task-form');
+const projSelect = document.getElementById('project-select');
+const editBtns = document.getElementsByClassName('edit-btn');
+const checkBox = document.getElementById('checkbox');
 
 // create HTML element and append to DOM
 function createAndAppend(elementType, eleClass, eleID, eleText, eleParent) {
@@ -27,36 +34,33 @@ function createAndAppend(elementType, eleClass, eleID, eleText, eleParent) {
   return element;
 }
 
-// need to create a class and make the following function a method within the class
-// Add project name submission to the DOM project list
-function appendNewProject(title) {
-  // create li element and append to project list
-  const liEle = createAndAppend('li', null, null, null, projCont);
-
-  // create button inside li element
-
-  createAndAppend('button', 'sb-btns projects', null, title, liEle);
-
-  // clear text field
-  projectTextField.value = '';
-}
+const projectsArr = [];
+const tasksArr = [];
 
 // factory fn for creating new project
 function ProjectFactory(title) {
-  const tasks = [];
-  const addTask = (taskObj) => {
-    // logic to add new to-do to tasks array
-    tasks.push(taskObj);
+  // Add project name submission to the DOM project list
+  const append = (projTitle) => {
+    // create li element and append to project list
+    const liEle = createAndAppend('li', null, null, null, projCont);
+
+    // create button inside li element
+    createAndAppend('button', 'sb-btns projects', null, projTitle, liEle);
+
+    // clear text field
+    projectTextField.value = '';
   };
-  return { title, tasks, addTask };
+
+  return { title, append };
 }
 
 // factory fn for creating new to-do task
 function taskFactory(project, title) {
-  let taskInfo = {
+  const taskInfo = {
     dueDate: '',
     priority: '',
     description: '',
+    completion: false,
   };
 
   const setDueDate = (date) => {
@@ -66,6 +70,9 @@ function taskFactory(project, title) {
   const setPriority = (setting) => {
     taskInfo.priority = setting;
   };
+
+  // add task methods here
+
   return {
     project,
     title,
@@ -73,6 +80,73 @@ function taskFactory(project, title) {
     setDueDate,
     setPriority,
   };
+}
+
+// append new task card
+const appendTask = (task, displayProj) => {
+  const taskList = document.getElementById('task-list');
+  const taskCard = createAndAppend('div', 'task-card', null, null, taskList);
+
+  // display project of task for home buttons
+  if (displayProj === true) {
+    createAndAppend('div', null, null, task.project, taskCard);
+  } else {
+    // create empty div if viewing projects
+    createAndAppend('div', null, null, null, taskCard);
+  }
+
+  // container for middle contents of task card
+  const middleCont = createAndAppend(
+    'div',
+    'midline-card',
+    null,
+    null,
+    taskCard,
+  );
+
+  const checkBox = createAndAppend('input', 'checkbox', null, null, middleCont);
+  checkBox.setAttribute('type', 'checkbox');
+
+  // display title of task
+  createAndAppend('div', null, null, task.title, middleCont);
+
+  // display due date of task
+  const dateLine = createAndAppend(
+    'div',
+    null,
+    null,
+    task.taskInfo.dueDate,
+    middleCont,
+  );
+
+  if (task.taskInfo.dueDate === '') {
+    dateLine.textContent = 'No due date';
+  }
+
+  // container for middle contents of task card
+  const bottomCont = createAndAppend('div', null, null, null, taskCard);
+
+  // edit card button
+  const editBtn = createAndAppend(
+    'button',
+    'edit-btn',
+    null,
+    'edit',
+    bottomCont,
+  );
+};
+
+// loads task container with tasks for the page called
+function loadTasks(page) {
+  for (let i = 0; i < tasksArr.length; i += 1) {
+    // if task matches the project page, append that task to that page
+    if (page.title === tasksArr[i].project) {
+      // append tasks that are incomplete
+      if (tasksArr[i].taskInfo.completion === false) {
+        appendTask(tasksArr[i]);
+      }
+    }
+  }
 }
 
 // Change displays for new project buttons from 'none' to 'block'
@@ -97,14 +171,11 @@ Array.from(projectBtns).forEach((element) => {
   });
 });
 
-const projectsArr = [];
-const tasksArr = [];
-
 // append example project to project list
 (function exampleProject() {
   let exampleProj = ProjectFactory('The Odin Project');
   projectsArr.push(exampleProj);
-  appendNewProject(exampleProj.title);
+  exampleProj.append(exampleProj.title);
 })();
 
 // event listener to add and create new project
@@ -115,18 +186,21 @@ submitProjectBtn.addEventListener('click', () => {
   } else {
     let newProj = ProjectFactory(projName);
     projectsArr.push(newProj);
-    appendNewProject(newProj.title);
+    newProj.append(newProj.title);
   }
 });
 
-// event listeners for project list
+// event listeners to open project page
 projCont.addEventListener('click', (e) => {
+  const taskList = document.getElementById('task-list');
   if (e.target.classList.contains('projects')) {
     const projTitle = e.target.textContent;
-    console.log('project title: ' + projTitle);
 
     for (let i = 0; i < projectsArr.length; i += 1) {
       if (projectsArr[i].title === projTitle) {
+        // clear task list
+        taskList.innerHTML = '';
+
         // open projects module with project index
         projectPages(projectsArr[i]);
       }
@@ -134,12 +208,65 @@ projCont.addEventListener('click', (e) => {
   }
 });
 
+// event listeners for home button modules
+Array.from(homeBtns).forEach((button) => {
+  button.addEventListener('click', () => {
+    if (button.textContent === 'Today') {
+      today();
+    }
+  });
+});
+
+// open/close edit task popup
+const toggleEdit = () => {
+  const editPopUp = createAndAppend('div', null, 'edit-popup', null, mainBody);
+  const popUpTitle = createAndAppend('div', null, null, 'Edit', editPopUp);
+
+  // append inputs with editable card info
+
+  const modifyTaskbtn = createAndAppend(
+    'button',
+    null,
+    null,
+    'Modify',
+    editPopUp,
+  );
+  const cancelEditBtn = createAndAppend(
+    'button',
+    null,
+    null,
+    'Cancel',
+    editPopUp,
+  );
+
+  // delete edit popup button
+  cancelEditBtn.addEventListener('click', () => {
+    editPopUp.remove();
+  });
+};
+
+// event listener for edit task button
+// **** UNFINISHED ****
+mainBody.addEventListener('click', (e) => {
+  if (e.target.classList.contains('edit-btn')) {
+    console.log('edit task clicked!');
+    // target parent of edit-btn to find info about the task
+    // use task as argument for below fn
+    toggleEdit();
+    // function to update current card
+  }
+});
+
 pageload();
-export { createAndAppend, projectsArr, taskFactory, tasksArr };
-
-// event listener for sidebar elements to display clicked module
-
-// export array of projects to use for projects module
+export {
+  createAndAppend,
+  ProjectFactory,
+  projectsArr,
+  taskFactory,
+  tasksArr,
+  appendTask,
+  loadTasks,
+};
 
 /*
 
@@ -179,6 +306,7 @@ FUNCTIONS, OBJ, & STUFF:
 - completeTask
     -> push to doneArr
 - expandTask: display to-do information
+- editTask
 - setPageStatus
 
 

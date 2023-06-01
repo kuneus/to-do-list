@@ -21,7 +21,9 @@
         <h2>Home</h2>
         <div class="sb-home-container">
           <ul>
-            <li><button class="sb-btns home-btns">Today</button></li>
+            <li>
+              <button class="sb-btns home-btns" id="today-btn">Today</button>
+            </li>
             <li><button class="sb-btns home-btns">Upcoming</button></li>
             <li><button class="sb-btns home-btns">All Tasks</button></li>
             <li><button class="sb-btns home-btns">Completed</button></li>
@@ -76,6 +78,7 @@
             type="text"
             id="project-textfield"
             placeholder="Project name"
+            maxlength="30"
           />
           <div>
             <button id="new-project-submit" class="project-btns">Create</button>

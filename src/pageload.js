@@ -1,15 +1,43 @@
-import { createAndAppend, projectsArr, taskFactory, tasksArr } from './index';
-// taskFactory(project, title, dueDate, priority, description) {
-// return { project, title, dueDate, priority, description };
+import {
+  createAndAppend,
+  ProjectFactory,
+  projectsArr,
+  taskFactory,
+  tasksArr,
+  appendTask,
+} from './index';
+// taskFactory(project, title)
+// return {project,title,taskInfo,setDueDate,setPriority,};
 
 const pageload = () => {
   const mainBody = document.getElementById('main-body');
 
   // header for Today
-  const mainHeader = createAndAppend('div', null, null, 'Today', mainBody);
+  const mainHeader = createAndAppend(
+    'div',
+    null,
+    'task-header',
+    null,
+    mainBody,
+  );
+
+  // display title of page
+  const pageTitle = createAndAppend(
+    'div',
+    null,
+    'page-title',
+    'Today',
+    mainHeader,
+  );
 
   // container for new task buttons
-  const newTaskCont = createAndAppend('div', null, null, null, mainHeader);
+  const newTaskCont = createAndAppend(
+    'div',
+    null,
+    'new-task-cont',
+    null,
+    mainHeader,
+  );
 
   // button to open new task form
   const addTask = createAndAppend(
@@ -19,8 +47,11 @@ const pageload = () => {
     'Add to-do',
     newTaskCont,
   );
+
   // container for new task form
-  const taskForm = createAndAppend('div', null, null, null, newTaskCont);
+  const taskForm = createAndAppend('div', null, 'task-form', null, newTaskCont);
+
+  // text input for inputting title of task
   const textInput = createAndAppend(
     'input',
     null,
@@ -29,6 +60,12 @@ const pageload = () => {
     taskForm,
   );
   textInput.setAttribute('placeholder', 'What will you do?');
+
+  // select due date
+  const dateInput = createAndAppend('input', null, null, null, taskForm);
+  dateInput.setAttribute('type', 'date');
+
+  // select options for projects
   const selectInput = createAndAppend(
     'select',
     null,
@@ -41,18 +78,20 @@ const pageload = () => {
   const createTaskBtn = createAndAppend(
     'button',
     'task-form-btns',
-    null,
+    'create-task-btn',
     'Add',
     taskForm,
   );
+
   // button to cancel adding new task
   const cancelBtn = createAndAppend(
     'button',
     'task-form-btns',
-    null,
+    'cancel-task-btn',
     'Cancel',
     taskForm,
   );
+
   // default to hidden task form
   taskForm.style.display = 'none';
 
@@ -77,36 +116,57 @@ const pageload = () => {
     }
   });
 
-  // add new to-do
+  const taskFormBtns = document.getElementsByClassName('task-form-btns');
+
+  // event listener to submit new to-do
   createTaskBtn.addEventListener('click', () => {
-    const projectSelect = document.getElementById('project-select').value;
-    const projectInput = document.getElementById('project-input').value;
-    // logic to add new to-do
-    // use taskFactory to create new to-do
-    // set dueDate to today's date
-    // need select option for current projects
-    const newTask = taskFactory(projectSelect, projectInput);
-    tasksArr.push(newTask);
-    appendTask(newTask);
+    // **** need logic to set dueDate to today's date ****
+
+    if (textInput.value !== '') {
+      // make new task
+      const newTask = taskFactory(selectInput.value, textInput.value);
+      newTask.setDueDate(dateInput.value);
+      tasksArr.push(newTask);
+      appendTask(newTask, true);
+    } else {
+      console.log('empty text input!');
+    }
   });
 
-  const taskFormBtns = document.getElementsByClassName('task-form-btns');
   // hide task form and return to default
   Array.from(taskFormBtns).forEach((button) => {
     button.addEventListener('click', () => {
       taskForm.style.display = 'none';
       addTask.style.display = 'block';
+      textInput.value = '';
     });
   });
 
   // container for list of tasks
-  const taskList = createAndAppend('div', null, null, null, mainBody);
-  // append new task
-  const appendTask = (task) => {
-    const taskLine = createAndAppend('div', 'task-line', null, null, taskList);
-    createAndAppend('div', null, null, task.title, taskLine);
-    createAndAppend('div', null, null, task.project, taskLine);
-  };
+  createAndAppend('div', null, 'task-list', null, mainBody);
+
+  // load page with example tasks
+  (function exampleTasks() {
+    const task1 = taskFactory(
+      'The Odin Project',
+      'Create modules for Home sidebar buttons',
+    );
+    tasksArr.push(task1);
+
+    const task2 = taskFactory('The Odin Project', 'Create editTask function');
+    tasksArr.push(task2);
+
+    const task3 = taskFactory('The Odin Project', 'Create deleteTask function');
+    tasksArr.push(task3);
+
+    const task4 = taskFactory('The Odin Project', 'Add checkbox to tasks');
+    tasksArr.push(task4);
+  })();
+
+  // Load task list with current tasks
+  for (let i = 0; i < tasksArr.length; i += 1) {
+    appendTask(tasksArr[i], true);
+  }
 };
 
 export { pageload };
