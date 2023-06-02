@@ -123,17 +123,17 @@ const appendTask = (task, displayProj) => {
     dateLine.textContent = 'No due date';
   }
 
-  // container for middle contents of task card
-  const bottomCont = createAndAppend('div', null, null, null, taskCard);
-
   // edit card button
   const editBtn = createAndAppend(
     'button',
     'edit-btn',
     null,
     'edit',
-    bottomCont,
+    middleCont,
   );
+
+  // container for middle contents of task card
+  const bottomCont = createAndAppend('div', null, null, null, taskCard);
 };
 
 // loads task container with tasks for the page called
@@ -218,19 +218,61 @@ Array.from(homeBtns).forEach((button) => {
 });
 
 // open/close edit task popup
-const toggleEdit = () => {
+// NOTE:  might be better to turn this into a module as a permanent popup in pageload
+// and make fn to toggle the display setting instead
+const toggleEdit = (task) => {
   const editPopUp = createAndAppend('div', null, 'edit-popup', null, mainBody);
   const popUpTitle = createAndAppend('div', null, null, 'Edit', editPopUp);
 
-  // append inputs with editable card info
-
-  const modifyTaskbtn = createAndAppend(
-    'button',
+  // task title
+  const editTitle = createAndAppend(
+    'input',
     null,
+    'edit-title',
     null,
-    'Modify',
     editPopUp,
   );
+  editTitle.value = task.title;
+
+  // task description
+  const editDesc = createAndAppend('input', null, 'edit-desc', null, editPopUp);
+  editDesc.value = task.taskInfo.description;
+  editDesc.setAttribute('placeholder', 'Write a description');
+
+  // task due date
+  const editDate = createAndAppend('input', null, null, null, editPopUp);
+  editDate.setAttribute('type', 'date');
+  editDate.value = task.taskInfo.dueDate;
+
+  // task priority
+  const labelPriority = createAndAppend(
+    'label',
+    null,
+    null,
+    'Priority: ',
+    editPopUp,
+  );
+  labelPriority.setAttribute('for', 'edit-priority');
+  const editPriority = createAndAppend(
+    'select',
+    null,
+    'edit-priority',
+    null,
+    editPopUp,
+  );
+  editPriority.value = task.taskInfo.priority;
+
+  const lowPri = createAndAppend('option', null, null, 'Low', editPriority);
+  lowPri.value = 'low';
+  const medPri = createAndAppend('option', null, null, 'Medium', editPriority);
+  medPri.value = 'medium';
+  const hiPri = createAndAppend('option', null, null, 'High', editPriority);
+  hiPri.value = 'high';
+  const urgPri = createAndAppend('option', null, null, 'Urgent', editPriority);
+  urgPri.value = 'urgent';
+  // **** create options for priority ****
+
+  const saveTaskbtn = createAndAppend('button', null, null, 'Save', editPopUp);
   const cancelEditBtn = createAndAppend(
     'button',
     null,
@@ -249,10 +291,16 @@ const toggleEdit = () => {
 // **** UNFINISHED ****
 mainBody.addEventListener('click', (e) => {
   if (e.target.classList.contains('edit-btn')) {
-    console.log('edit task clicked!');
-    // target parent of edit-btn to find info about the task
-    // use task as argument for below fn
-    toggleEdit();
+    // identify title of task
+    let findTitle = e.target.previousElementSibling.previousElementSibling;
+
+    // find the task with corresponding title
+    for (let i = 0; i < tasksArr.length; i += 1) {
+      if (tasksArr[i].title === findTitle.textContent) {
+        toggleEdit(tasksArr[i]);
+      }
+    }
+
     // function to update current card
   }
 });

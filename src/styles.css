@@ -291,7 +291,7 @@ ul {
 
 .midline-card {
   display: grid;
-  grid-template-columns: 20px 80% auto;
+  grid-template-columns: 20px 80% auto auto;
   gap: 10px;
 }
 
@@ -300,7 +300,9 @@ ul {
   width: 200px;
   background-color: white;
   position: absolute;
-
+  padding: 20px;
+  border: solid 1px black;
+  border-radius: 15px;
   right: 50%;
   bottom: 50%;
 }
