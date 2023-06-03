@@ -167,6 +167,77 @@ const pageload = () => {
   for (let i = 0; i < tasksArr.length; i += 1) {
     appendTask(tasksArr[i], true);
   }
+
+  (function editTaskPopUp() {
+    const editPopUp = createAndAppend(
+      'div',
+      null,
+      'edit-popup',
+      null,
+      mainBody,
+    );
+    createAndAppend('div', null, null, 'Edit', editPopUp);
+
+    // task title
+    createAndAppend('input', null, 'edit-title', null, editPopUp);
+
+    // task description
+    const editDesc = createAndAppend(
+      'input',
+      null,
+      'edit-desc',
+      null,
+      editPopUp,
+    );
+    editDesc.setAttribute('placeholder', 'Write a description');
+
+    // task due date
+    const editDate = createAndAppend(
+      'input',
+      null,
+      'edit-date',
+      null,
+      editPopUp,
+    );
+    editDate.setAttribute('type', 'date');
+
+    // task priority
+    const labelPriority = createAndAppend(
+      'label',
+      null,
+      null,
+      'Priority: ',
+      editPopUp,
+    );
+    labelPriority.setAttribute('for', 'edit-priority');
+    const editPri = createAndAppend(
+      'select',
+      null,
+      'edit-priority',
+      null,
+      editPopUp,
+    );
+
+    const lowPri = createAndAppend('option', null, null, 'Low', editPri);
+    lowPri.value = 'low';
+    const medPri = createAndAppend('option', null, null, 'Medium', editPri);
+    medPri.value = 'medium';
+    const hiPri = createAndAppend('option', null, null, 'High', editPri);
+    hiPri.value = 'high';
+    const urgPri = createAndAppend('option', null, null, 'Urgent', editPri);
+    urgPri.value = 'urgent';
+
+    // save and cancel buttons
+    createAndAppend('button', null, 'save-task-btn', 'Save', editPopUp);
+    const cancelEditBtn = createAndAppend(
+      'button',
+      null,
+      'cancel-edit-btn',
+      'Cancel',
+      editPopUp,
+    );
+    editPopUp.style.display = 'none';
+  })();
 };
 
 export { pageload };
