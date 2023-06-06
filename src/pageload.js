@@ -5,7 +5,11 @@ import {
   taskFactory,
   tasksArr,
   appendTask,
+  createTaskForm,
+  submitTask,
 } from './index';
+import { format, parseISO } from 'date-fns';
+
 // taskFactory(project, title)
 // return {project,title,taskInfo,setDueDate,setPriority,};
 
@@ -49,48 +53,13 @@ const pageload = () => {
   );
 
   // container for new task form
-  const taskForm = createAndAppend('div', null, 'task-form', null, newTaskCont);
+  createTaskForm(true);
 
-  // text input for inputting title of task
-  const textInput = createAndAppend(
-    'input',
-    null,
-    'project-input',
-    null,
-    taskForm,
-  );
-  textInput.setAttribute('placeholder', 'What will you do?');
-
-  // select due date
-  const dateInput = createAndAppend('input', null, null, null, taskForm);
-  dateInput.setAttribute('type', 'date');
-
-  // select options for projects
-  const selectInput = createAndAppend(
-    'select',
-    null,
-    'project-select',
-    null,
-    taskForm,
-  );
-
-  // button to submit new task
-  const createTaskBtn = createAndAppend(
-    'button',
-    'task-form-btns',
-    'create-task-btn',
-    'Add',
-    taskForm,
-  );
-
-  // button to cancel adding new task
-  const cancelBtn = createAndAppend(
-    'button',
-    'task-form-btns',
-    'cancel-task-btn',
-    'Cancel',
-    taskForm,
-  );
+  const taskForm = document.getElementById('task-form');
+  const selectInput = document.getElementById('project-select');
+  const textInput = document.getElementById('project-input');
+  const createTaskBtn = document.getElementById('create-task-btn');
+  const dateInput = document.getElementById('date-input');
 
   // default to hidden task form
   taskForm.style.display = 'none';
@@ -120,17 +89,7 @@ const pageload = () => {
 
   // event listener to submit new to-do
   createTaskBtn.addEventListener('click', () => {
-    // **** need logic to set dueDate to today's date ****
-
-    if (textInput.value !== '') {
-      // make new task
-      const newTask = taskFactory(selectInput.value, textInput.value);
-      newTask.setDueDate(dateInput.value);
-      tasksArr.push(newTask);
-      appendTask(newTask, true);
-    } else {
-      console.log('empty text input!');
-    }
+    submitTask();
   });
 
   // hide task form and return to default
@@ -147,16 +106,23 @@ const pageload = () => {
 
   // load page with example tasks
   (function exampleTasks() {
+    const date = new Date();
+    const currentDate = format(date, 'MM/dd/yyy');
+
     const task1 = taskFactory(
       'The Odin Project',
       'Create modules for Home sidebar buttons',
     );
+    task1.setDueDate(currentDate);
+    task1.taskInfo.unformattedDate = date;
     tasksArr.push(task1);
 
     const task2 = taskFactory('The Odin Project', 'Create editTask function');
     tasksArr.push(task2);
 
     const task3 = taskFactory('The Odin Project', 'Create deleteTask function');
+    task3.setDueDate(currentDate);
+    task3.taskInfo.unformattedDate = date;
     tasksArr.push(task3);
 
     const task4 = taskFactory('The Odin Project', 'Add checkbox to tasks');
@@ -229,13 +195,7 @@ const pageload = () => {
 
     // save and cancel buttons
     createAndAppend('button', null, 'save-task-btn', 'Save', editPopUp);
-    const cancelEditBtn = createAndAppend(
-      'button',
-      null,
-      'cancel-edit-btn',
-      'Cancel',
-      editPopUp,
-    );
+    createAndAppend('button', null, 'cancel-edit-btn', 'Cancel', editPopUp);
     editPopUp.style.display = 'none';
   })();
 };

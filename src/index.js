@@ -2,6 +2,8 @@ import './styles.css';
 import { projectPages } from './projects';
 import { pageload } from './pageload';
 import { today } from './today';
+import { format, parseISO, add, isWithinInterval, parse } from 'date-fns';
+import { completeTask } from './completed';
 
 const projCont = document.getElementById('projects-list');
 const newProjectBtn = document.getElementById('new-project-btn');
@@ -9,14 +11,8 @@ const projectFormCont = document.getElementById('project-form-btns');
 const submitProjectBtn = document.getElementById('new-project-submit');
 const projectBtns = document.getElementsByClassName('project-btns');
 const projectTextField = document.getElementById('project-textfield');
-const projectListBtns = document.getElementsByClassName('projects');
 const homeBtns = document.getElementsByClassName('home-btns');
 const mainBody = document.getElementById('main-body');
-const mainHeader = document.getElementById('task-header');
-const taskForm = document.getElementById('task-form');
-const projSelect = document.getElementById('project-select');
-const editBtns = document.getElementsByClassName('edit-btn');
-const checkBox = document.getElementById('checkbox');
 
 // create HTML element and append to DOM
 function createAndAppend(elementType, eleClass, eleID, eleText, eleParent) {
@@ -36,6 +32,13 @@ function createAndAppend(elementType, eleClass, eleID, eleText, eleParent) {
 
 const projectsArr = [];
 const tasksArr = [];
+
+// use to find current task or element selected
+const pageInfo = {
+  currentTask: '',
+  currentProject: '',
+  currentElement: '',
+};
 
 // factory fn for creating new project
 function ProjectFactory(title) {
@@ -61,6 +64,7 @@ function taskFactory(project, title) {
     priority: '',
     description: '',
     completion: false,
+    unformattedDate: '',
   };
 
   const setDueDate = (date) => {
@@ -80,10 +84,62 @@ function taskFactory(project, title) {
   };
 }
 
+const createTaskForm = (bool) => {
+  // container for new task form
+  const newTaskCont = document.getElementById('new-task-cont');
+  const taskForm = createAndAppend('div', null, 'task-form', null, newTaskCont);
+
+  // text input for inputting title of task
+  const textInput = createAndAppend(
+    'input',
+    null,
+    'project-input',
+    null,
+    taskForm,
+  );
+  textInput.setAttribute('placeholder', 'What will you do?');
+
+  // select due date
+  const dateInput = createAndAppend(
+    'input',
+    null,
+    'date-input',
+    null,
+    taskForm,
+  );
+  dateInput.setAttribute('type', 'date');
+
+  // select options for projects
+  if (bool === true) {
+    createAndAppend('select', null, 'project-select', null, taskForm);
+  }
+
+  // button to submit new task
+  createAndAppend(
+    'button',
+    'task-form-btns',
+    'create-task-btn',
+    'Add',
+    taskForm,
+  );
+
+  // button to cancel adding new task
+  createAndAppend(
+    'button',
+    'task-form-btns',
+    'cancel-task-btn',
+    'Cancel',
+    taskForm,
+  );
+  taskForm.style.display = 'none';
+};
+
 // append new task card
 const appendTask = (task, displayProj) => {
   const taskList = document.getElementById('task-list');
-  const taskCard = createAndAppend('div', 'task-card', null, null, taskList);
+  const taskCard = document.createElement('div');
+  taskCard.setAttribute('class', 'task-card');
+  taskList.prepend(taskCard);
 
   // display project of task for home buttons
   if (displayProj === true) {
@@ -104,6 +160,10 @@ const appendTask = (task, displayProj) => {
 
   const checkBox = createAndAppend('input', 'checkbox', null, null, middleCont);
   checkBox.setAttribute('type', 'checkbox');
+  // check box if current task is complete
+  if (task.taskInfo.completion === true) {
+    checkBox.checked = true;
+  }
 
   // display title of task
   createAndAppend('div', 'card-title', null, task.title, middleCont);
@@ -134,7 +194,7 @@ const appendTask = (task, displayProj) => {
   const bottomCont = createAndAppend('div', null, null, null, taskCard);
 };
 
-// loads task container with tasks for the page called
+// loads task container with tasks for the project page called
 function loadTasks(page) {
   for (let i = 0; i < tasksArr.length; i += 1) {
     // if task matches the project page, append that task to that page
@@ -147,17 +207,58 @@ function loadTasks(page) {
   }
 }
 
+// loads tasks for the home page called
+function loadHomeTasks(page) {
+  const date = new Date(); // not formatted
+  const currentDate = format(date, 'MM/dd/yyy');
+  const sevenDays = add(date, { days: 7 });
+
+  // find tasks that matches the home page criteria
+  for (let i = 0; i < tasksArr.length; i += 1) {
+    const parsedTaskDate = parseISO(tasksArr[i].taskInfo.unformattedDate);
+
+    if (tasksArr[i].taskInfo.completion === false) {
+      switch (page) {
+        case 'today':
+          if (currentDate === tasksArr[i].taskInfo.dueDate) {
+            appendTask(tasksArr[i], true);
+          }
+          break;
+        case 'upcoming': // tasks due in the next 7 days
+          if (
+            isWithinInterval(parsedTaskDate, {
+              start: date,
+              end: sevenDays,
+            })
+          ) {
+            appendTask(tasksArr[i], true);
+          }
+          break;
+        case 'all tasks': // append all tasks
+          appendTask(tasksArr[i], true);
+          break;
+        case 'trash': // if task was deleted
+          console.log('deleted tasks');
+          break;
+        default:
+      }
+    } else if (
+      // for 'completed' page
+      tasksArr[i].taskInfo.completion === true &&
+      page === 'completed'
+    ) {
+      appendTask(tasksArr[i], true);
+    }
+  }
+}
+
 // Change displays for new project buttons from 'none' to 'block'
 function changeBtnDisplay() {
   if (projectFormCont.style.display === 'flex') {
     projectFormCont.style.display = 'none';
-  } else {
-    projectFormCont.style.display = 'flex';
-  }
-
-  if (newProjectBtn.style.display === 'none') {
     newProjectBtn.style.display = 'block';
   } else {
+    projectFormCont.style.display = 'flex';
     newProjectBtn.style.display = 'none';
   }
 }
@@ -195,22 +296,73 @@ projCont.addEventListener('click', (e) => {
     const projTitle = e.target.textContent;
 
     for (let i = 0; i < projectsArr.length; i += 1) {
+      // find project page in array
       if (projectsArr[i].title === projTitle) {
-        // clear task list
+        // clear tasks
         taskList.innerHTML = '';
 
-        // open projects module with project index
+        // display selected project's tasks
         projectPages(projectsArr[i]);
+        pageInfo.currentProject = projectsArr[i].title;
       }
     }
   }
 });
 
+// function to take task form input and submit task
+const submitTask = () => {
+  const textInput = document.getElementById('project-input');
+  const dateInput = document.getElementById('date-input');
+  const selectInput = document.getElementById('project-select');
+
+  if (textInput.value !== '') {
+    const newTask = taskFactory(selectInput.value, textInput.value);
+
+    // format date input
+    if (dateInput.value !== '') {
+      const parseDate = parseISO(dateInput.value);
+      const formattedDate = format(parseDate, 'MM/dd/yyyy');
+      newTask.setDueDate(formattedDate);
+      newTask.taskInfo.unformattedDate = dateInput.value;
+    } else {
+      newTask.setDueDate('');
+    }
+
+    // check if in project module
+    if (selectInput.style.display === 'none') {
+      // set task's project as current project selected without
+      // appending the project title to each task card
+      newTask.project = pageInfo.currentProject;
+      tasksArr.push(newTask);
+      appendTask(newTask, false);
+    } else {
+      tasksArr.push(newTask);
+      appendTask(newTask, true);
+    }
+  } else {
+    alert('please submit a title for your task!');
+  }
+};
+
 // event listeners for home button modules
 Array.from(homeBtns).forEach((button) => {
   button.addEventListener('click', () => {
+    const taskList = document.getElementById('task-list');
     if (button.textContent === 'Today') {
+      taskList.innerHTML = '';
       today();
+    } else if (button.textContent === 'Upcoming') {
+      taskList.innerHTML = '';
+      loadHomeTasks('upcoming');
+    } else if (button.textContent === 'All Tasks') {
+      taskList.innerHTML = '';
+      loadHomeTasks('all tasks');
+    } else if (button.textContent === 'Completed') {
+      taskList.innerHTML = '';
+      loadHomeTasks('completed');
+    } else if (button.textContent === 'Trash') {
+      taskList.innerHTML = '';
+      loadHomeTasks('trash');
     }
   });
 });
@@ -223,13 +375,6 @@ const toggleEdit = () => {
   } else if (popupCont.style.display === 'none') {
     popupCont.style.display = 'block';
   }
-};
-
-// use to find current task or element selected
-const pageInfo = {
-  currentTask: '',
-  currentProject: '',
-  currentElement: '',
 };
 
 // populate edit popup with clicked task's information to edit
@@ -250,9 +395,18 @@ const updateTaskObj = (task) => {
   const editDesc = document.getElementById('edit-desc');
   const editDate = document.getElementById('edit-date');
   const editPri = document.getElementById('edit-priority');
+
   task.title = editTitle.value;
   task.taskInfo.description = editDesc.value;
-  task.taskInfo.dueDate = editDate.value;
+  // update date with new format
+  if (editDate.value !== '') {
+    const parseDate = parseISO(editDate.value);
+    const formattedDate = format(parseDate, 'MM/dd/yyyy');
+    task.taskInfo.dueDate = formattedDate;
+    task.taskInfo.unformattedDate = editDate.value;
+  } else {
+    task.taskInfo.dueDate = 'No due date';
+  }
   task.taskInfo.priority = editPri.value;
 };
 
@@ -316,7 +470,12 @@ mainBody.addEventListener('click', (e) => {
   }
 });
 
+// **** CURRENT TO-DO:  filter by date for 'today' and for other home btns
+
+// OTHER TODOS: checkmark for task complete
+
 pageload();
+completeTask();
 export {
   createAndAppend,
   ProjectFactory,
@@ -325,6 +484,10 @@ export {
   tasksArr,
   appendTask,
   loadTasks,
+  loadHomeTasks,
+  createTaskForm,
+  submitTask,
+  pageInfo,
 };
 
 /*
