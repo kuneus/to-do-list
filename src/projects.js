@@ -3,7 +3,7 @@ import { loadTasks } from './index';
 
 const projectPages = (project) => {
   const pageTitle = document.getElementById('page-title');
-  const projSelect = document.getElementById('project-select');
+  const selectCont = document.getElementById('select-cont');
 
   // set title of page to Project's title
   pageTitle.textContent = project.title;
@@ -11,7 +11,8 @@ const projectPages = (project) => {
   // load page with project's tasks
   loadTasks(project);
 
-  projSelect.style.display = 'none';
+  // hide project selection options within task form since not needed for this module
+  selectCont.style.display = 'none';
 };
 
 export { projectPages };

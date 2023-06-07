@@ -90,6 +90,10 @@ const createTaskForm = (bool) => {
   const newTaskCont = document.getElementById('new-task-cont');
   const taskForm = createAndAppend('div', null, 'task-form', null, newTaskCont);
 
+  // label for title of task
+  const textLabel = createAndAppend('label', null, null, 'Title:', taskForm);
+  textLabel.setAttribute('for', 'project-input');
+
   // text input for inputting title of task
   const textInput = createAndAppend(
     'input',
@@ -99,6 +103,10 @@ const createTaskForm = (bool) => {
     taskForm,
   );
   textInput.setAttribute('placeholder', 'What will you do?');
+
+  // label for Date
+  const dateLabel = createAndAppend('label', null, null, 'Due Date:', taskForm);
+  dateLabel.setAttribute('for', 'date-input');
 
   // select due date
   const dateInput = createAndAppend(
@@ -112,7 +120,25 @@ const createTaskForm = (bool) => {
 
   // select options for projects
   if (bool === true) {
-    createAndAppend('select', null, 'project-select', null, taskForm);
+    const selectCont = createAndAppend(
+      'div',
+      null,
+      'select-cont',
+      null,
+      taskForm,
+    );
+
+    // label for project selection
+    const projLabel = createAndAppend(
+      'label',
+      null,
+      null,
+      'Project:',
+      selectCont,
+    );
+    projLabel.setAttribute('for', 'project-select');
+
+    createAndAppend('select', null, 'project-select', null, selectCont);
   }
 
   // button to submit new task
@@ -294,6 +320,16 @@ submitProjectBtn.addEventListener('click', () => {
   }
 });
 
+// display task form for project pages, 'today', and 'upcoming'
+const toggleTaskFormDisplay = (display) => {
+  const newTaskCont = document.getElementById('new-task-cont');
+  if (display === true) {
+    newTaskCont.style.display = '';
+  } else {
+    newTaskCont.style.display = 'none';
+  }
+};
+
 // event listeners to open project page
 projCont.addEventListener('click', (e) => {
   const taskList = document.getElementById('task-list');
@@ -310,6 +346,8 @@ projCont.addEventListener('click', (e) => {
         projectPages(projectsArr[i]);
         pageInfo.currentProject = projectsArr[i].title;
       }
+
+      toggleTaskFormDisplay(true);
     }
   }
 });
@@ -356,13 +394,23 @@ Array.from(homeBtns).forEach((button) => {
     // not currently needed
     pageInfo.currentHomePage = button.textContent;
 
+    if (
+      pageInfo.currentHomePage === 'Today' ||
+      pageInfo.currentHomePage === 'All Tasks'
+    ) {
+      toggleTaskFormDisplay(true);
+    } else {
+      toggleTaskFormDisplay(false);
+    }
+
     const taskList = document.getElementById('task-list');
     const pageTitle = document.getElementById('page-title');
     const projSelect = document.getElementById('project-select');
+    const selectCont = document.getElementById('select-cont');
 
     taskList.innerHTML = '';
     pageTitle.textContent = button.textContent;
-    projSelect.style.display = '';
+    selectCont.style.display = '';
     loadHomeTasks(button.textContent);
   });
 });
