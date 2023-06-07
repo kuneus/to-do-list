@@ -30,7 +30,7 @@ const pageload = () => {
     'div',
     null,
     'page-title',
-    'Today',
+    'All Tasks',
     mainHeader,
   );
 

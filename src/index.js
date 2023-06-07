@@ -38,6 +38,7 @@ const pageInfo = {
   currentTask: '',
   currentProject: '',
   currentElement: '',
+  currentHomePage: '',
 };
 
 // factory fn for creating new project
@@ -219,12 +220,12 @@ function loadHomeTasks(page) {
 
     if (tasksArr[i].taskInfo.completion === false) {
       switch (page) {
-        case 'today':
+        case 'Today':
           if (currentDate === tasksArr[i].taskInfo.dueDate) {
             appendTask(tasksArr[i], true);
           }
           break;
-        case 'upcoming': // tasks due in the next 7 days
+        case 'Upcoming': // tasks due in the next 7 days
           if (
             isWithinInterval(parsedTaskDate, {
               start: date,
@@ -232,22 +233,26 @@ function loadHomeTasks(page) {
             })
           ) {
             appendTask(tasksArr[i], true);
+            // **** REMOVE TASK FORM, DO NOT NEED TO ADD TASKS HERE
           }
           break;
-        case 'all tasks': // append all tasks
+        case 'All Tasks': // append all tasks
           appendTask(tasksArr[i], true);
           break;
-        case 'trash': // if task was deleted
+        case 'Trash': // if task was deleted
           console.log('deleted tasks');
+          // **** NEED LOGIC FOR DELETING TASK ****
+          // **** REMOVE TASK FORM, DO NOT NEED TO ADD TASKS HERE
           break;
         default:
       }
     } else if (
       // for 'completed' page
       tasksArr[i].taskInfo.completion === true &&
-      page === 'completed'
+      page === 'Completed'
     ) {
       appendTask(tasksArr[i], true);
+      // **** REMOVE TASK FORM, DO NOT NEED TO ADD TASKS HERE
     }
   }
 }
@@ -347,23 +352,18 @@ const submitTask = () => {
 // event listeners for home button modules
 Array.from(homeBtns).forEach((button) => {
   button.addEventListener('click', () => {
+    // set current home page
+    // not currently needed
+    pageInfo.currentHomePage = button.textContent;
+
     const taskList = document.getElementById('task-list');
-    if (button.textContent === 'Today') {
-      taskList.innerHTML = '';
-      today();
-    } else if (button.textContent === 'Upcoming') {
-      taskList.innerHTML = '';
-      loadHomeTasks('upcoming');
-    } else if (button.textContent === 'All Tasks') {
-      taskList.innerHTML = '';
-      loadHomeTasks('all tasks');
-    } else if (button.textContent === 'Completed') {
-      taskList.innerHTML = '';
-      loadHomeTasks('completed');
-    } else if (button.textContent === 'Trash') {
-      taskList.innerHTML = '';
-      loadHomeTasks('trash');
-    }
+    const pageTitle = document.getElementById('page-title');
+    const projSelect = document.getElementById('project-select');
+
+    taskList.innerHTML = '';
+    pageTitle.textContent = button.textContent;
+    projSelect.style.display = '';
+    loadHomeTasks(button.textContent);
   });
 });
 
@@ -470,9 +470,16 @@ mainBody.addEventListener('click', (e) => {
   }
 });
 
-// **** CURRENT TO-DO:  filter by date for 'today' and for other home btns
+// **** CURRENT TO-DO:
 
-// OTHER TODOS: checkmark for task complete
+// 1 ----> still need to figure out how to correctly append due date to date input when
+// editing the task card
+
+// 2 ----> create delete button and delete function
+
+// 3 ----> edit task card to indicate priority by changing border color?
+
+// 4 ----> button to display task description??
 
 pageload();
 completeTask();
