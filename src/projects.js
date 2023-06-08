@@ -3,7 +3,7 @@ import { loadProjTasks } from './index';
 
 const projectPages = (project) => {
   const pageTitle = document.getElementById('page-title');
-  const selectCont = document.getElementById('select-cont');
+  const selectCont = document.getElementById('form-select-cont');
 
   // set title of page to Project's title
   pageTitle.textContent = project.title;

@@ -7,6 +7,7 @@ import {
   appendTask,
   createTaskForm,
   submitTask,
+  pageInfo,
 } from './index';
 import { format, parseISO } from 'date-fns';
 
@@ -68,6 +69,13 @@ const pageload = () => {
   addTask.addEventListener('click', () => {
     taskForm.style.display = 'block';
     addTask.style.display = 'none';
+
+    if (pageInfo.currentHomePage === 'Today') {
+      const today = format(new Date(), 'yyyy-MM-dd');
+      dateInput.value = today;
+    } else {
+      dateInput.value = '';
+    }
 
     // clear project select options
     selectInput.innerHTML = '';

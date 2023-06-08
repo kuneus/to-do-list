@@ -39,8 +39,12 @@ const pageInfo = {
   currentTask: '',
   currentProject: '',
   currentElement: '',
-  currentHomePage: '',
+  currentHomePage: 'All Tasks',
 };
+
+// <----- ***************** ----->
+// <----- FACTORY FUNCTIONS ----->
+// <----- ***************** ----->
 
 // factory fn for creating new project
 function ProjectFactory(title) {
@@ -85,6 +89,10 @@ function taskFactory(project, title) {
     setPriority,
   };
 }
+
+// <----- ****************** ----->
+// <----- TASK FUNCTIONALITY ----->
+// <----- ****************** ----->
 
 const createTaskForm = (bool) => {
   // container for new task form
@@ -353,33 +361,12 @@ const toggleTaskFormDisplay = (display) => {
   }
 };
 
-// event listeners to open project page
-projCont.addEventListener('click', (e) => {
-  const taskList = document.getElementById('task-list');
-  if (e.target.classList.contains('projects')) {
-    const projTitle = e.target.textContent;
-
-    for (let i = 0; i < projectsArr.length; i += 1) {
-      // find project page in array
-      if (projectsArr[i].title === projTitle) {
-        // clear tasks
-        taskList.innerHTML = '';
-
-        // display selected project's tasks
-        projectPages(projectsArr[i]);
-        pageInfo.currentProject = projectsArr[i].title;
-      }
-
-      toggleTaskFormDisplay(true);
-    }
-  }
-});
-
 // function to take task form input and submit task
 const submitTask = () => {
   const textInput = document.getElementById('project-input');
   const dateInput = document.getElementById('date-input');
   const selectInput = document.getElementById('project-select');
+  const formattedToday = format(new Date(), 'yyyy-MM-dd');
 
   if (textInput.value !== '') {
     const newTask = taskFactory(selectInput.value, textInput.value);
@@ -395,28 +382,66 @@ const submitTask = () => {
     }
 
     // check if in project module
-    if (selectInput.style.display === 'none') {
+    if (pageInfo.currentProject !== '') {
       // set task's project as current project selected without
       // appending the project title to each task card
       newTask.project = pageInfo.currentProject;
       tasksArr.push(newTask);
       appendTask(newTask, false);
     } else {
+      // if in home page module
       tasksArr.push(newTask);
-      appendTask(newTask, true);
+      // append task to current task list if not on Today page
+      if (pageInfo.currentHomePage !== 'Today') {
+        appendTask(newTask, true);
+      } else if (dateInput.value === formattedToday) {
+        // if in Today page, only append the new task if it's due today
+        appendTask(newTask, true);
+      }
     }
   } else {
     alert('please submit a title for your task!');
   }
 };
 
+// <----- ************************ ----->
+// <----- SIDE BTN EVENT LISTENERS ----->
+// <----- ************************ ----->
+
+// event listeners to open project page
+projCont.addEventListener('click', (e) => {
+  const taskList = document.getElementById('task-list');
+  if (e.target.classList.contains('projects')) {
+    const projTitle = e.target.textContent;
+
+    for (let i = 0; i < projectsArr.length; i += 1) {
+      // find project page in array
+      if (projectsArr[i].title === projTitle) {
+        // clear tasks
+        taskList.innerHTML = '';
+
+        // display selected project's tasks
+        projectPages(projectsArr[i]);
+
+        // set current page info to project title and clear current home page
+        pageInfo.currentProject = projectsArr[i].title;
+        pageInfo.currentHomePage = '';
+      }
+
+      toggleTaskFormDisplay(true);
+    }
+  }
+});
+
 // event listeners for home button modules
 Array.from(homeBtns).forEach((button) => {
   button.addEventListener('click', () => {
-    // set current home page
-    // not currently needed
+    // set current page info to home page clicked and clear project page status
     pageInfo.currentHomePage = button.textContent;
+    pageInfo.currentProject = '';
 
+    // only display new task form for 'today' and 'all tasks'
+    // do not allow ability to add new tasks for other home page buttons
     if (
       pageInfo.currentHomePage === 'Today' ||
       pageInfo.currentHomePage === 'All Tasks'
@@ -439,6 +464,10 @@ Array.from(homeBtns).forEach((button) => {
     loadHomeTasks(button.textContent);
   });
 });
+
+// <----- *********************** ----->
+// <----- EDIT TASK FUNCTIONALITY ----->
+// <----- *********************** ----->
 
 // open/close edit task popup
 const toggleEdit = () => {
@@ -560,14 +589,13 @@ mainBody.addEventListener('click', (e) => {
 
 // **** CURRENT TO-DO:
 
-// 1 ----> still need to figure out how to correctly append due date to date input when
-// editing the task card
-
 // 2 ----> create delete button and delete function
 
 // 3 ----> edit task card to indicate priority by changing border color?
 
 // 4 ----> button to display task description??
+
+// 5 ----> for 'today', populate date with today's date
 
 pageload();
 completeTask();
