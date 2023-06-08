@@ -30,6 +30,7 @@ function createAndAppend(elementType, eleClass, eleID, eleText, eleParent) {
   return element;
 }
 
+// array for all projects and for all tasks
 const projectsArr = [];
 const tasksArr = [];
 
@@ -90,8 +91,17 @@ const createTaskForm = (bool) => {
   const newTaskCont = document.getElementById('new-task-cont');
   const taskForm = createAndAppend('div', null, 'task-form', null, newTaskCont);
 
+  // container for title label and input
+  const titleCont = createAndAppend(
+    'div',
+    'form-title-cont',
+    null,
+    null,
+    taskForm,
+  );
+
   // label for title of task
-  const textLabel = createAndAppend('label', null, null, 'Title:', taskForm);
+  const textLabel = createAndAppend('label', null, null, 'Title:', titleCont);
   textLabel.setAttribute('for', 'project-input');
 
   // text input for inputting title of task
@@ -100,12 +110,21 @@ const createTaskForm = (bool) => {
     null,
     'project-input',
     null,
-    taskForm,
+    titleCont,
   );
   textInput.setAttribute('placeholder', 'What will you do?');
 
+  // container for date label and input
+  const dateCont = createAndAppend(
+    'div',
+    'form-date-cont',
+    null,
+    null,
+    taskForm,
+  );
+
   // label for Date
-  const dateLabel = createAndAppend('label', null, null, 'Due Date:', taskForm);
+  const dateLabel = createAndAppend('label', null, null, 'Due Date:', dateCont);
   dateLabel.setAttribute('for', 'date-input');
 
   // select due date
@@ -114,7 +133,7 @@ const createTaskForm = (bool) => {
     null,
     'date-input',
     null,
-    taskForm,
+    dateCont,
   );
   dateInput.setAttribute('type', 'date');
 
@@ -123,7 +142,7 @@ const createTaskForm = (bool) => {
     const selectCont = createAndAppend(
       'div',
       null,
-      'select-cont',
+      'form-select-cont',
       null,
       taskForm,
     );
@@ -141,13 +160,21 @@ const createTaskForm = (bool) => {
     createAndAppend('select', null, 'project-select', null, selectCont);
   }
 
+  const formBtnCont = createAndAppend(
+    'div',
+    'form-btn-cont',
+    null,
+    null,
+    taskForm,
+  );
+
   // button to submit new task
   createAndAppend(
     'button',
     'task-form-btns',
     'create-task-btn',
     'Add',
-    taskForm,
+    formBtnCont,
   );
 
   // button to cancel adding new task
@@ -156,7 +183,7 @@ const createTaskForm = (bool) => {
     'task-form-btns',
     'cancel-task-btn',
     'Cancel',
-    taskForm,
+    formBtnCont,
   );
   taskForm.style.display = 'none';
 };
@@ -209,20 +236,16 @@ const appendTask = (task, displayProj) => {
   }
 
   // edit card button
-  const editBtn = createAndAppend(
-    'button',
-    'edit-btn',
-    null,
-    'edit',
-    middleCont,
-  );
+  createAndAppend('button', 'edit-btn', null, 'edit', middleCont);
+  // delete task button
+  createAndAppend('button', 'delete-btn', null, 'delete', middleCont);
 
   // empty bottom container of task card
-  const bottomCont = createAndAppend('div', null, null, null, taskCard);
+  createAndAppend('div', null, null, null, taskCard);
 };
 
 // loads task container with tasks for the project page called
-function loadTasks(page) {
+function loadProjTasks(page) {
   for (let i = 0; i < tasksArr.length; i += 1) {
     // if task matches the project page, append that task to that page
     if (page.title === tasksArr[i].project) {
@@ -303,18 +326,18 @@ Array.from(projectBtns).forEach((element) => {
 
 // append example project to project list
 (function exampleProject() {
-  let exampleProj = ProjectFactory('The Odin Project');
+  const exampleProj = ProjectFactory('The Odin Project');
   projectsArr.push(exampleProj);
   exampleProj.append(exampleProj.title);
 })();
 
 // event listener to add and create new project
 submitProjectBtn.addEventListener('click', () => {
-  let projName = projectTextField.value;
+  const projName = projectTextField.value;
   if (projName === '') {
     alert('Please submit a project name');
   } else {
-    let newProj = ProjectFactory(projName);
+    const newProj = ProjectFactory(projName);
     projectsArr.push(newProj);
     newProj.append(newProj.title);
   }
@@ -405,12 +428,14 @@ Array.from(homeBtns).forEach((button) => {
 
     const taskList = document.getElementById('task-list');
     const pageTitle = document.getElementById('page-title');
-    const projSelect = document.getElementById('project-select');
-    const selectCont = document.getElementById('select-cont');
+    const selectCont = document.getElementById('form-select-cont');
 
+    // clear task list, set page title, and display project select options
     taskList.innerHTML = '';
     pageTitle.textContent = button.textContent;
     selectCont.style.display = '';
+
+    // load tasks of respective page
     loadHomeTasks(button.textContent);
   });
 });
@@ -431,9 +456,24 @@ const populateEdit = (task) => {
   const editDesc = document.getElementById('edit-desc');
   const editDate = document.getElementById('edit-date');
   const editPri = document.getElementById('edit-priority');
+  // task title
   editTitle.value = task.title;
+
+  // task description
   editDesc.value = task.taskInfo.description;
-  editDate.value = task.taskInfo.dueDate;
+
+  // task due date
+  if (task.taskInfo.dueDate !== '') {
+    const formattedDate = parse(
+      task.taskInfo.dueDate,
+      'MM/dd/yyyy',
+      new Date(),
+    );
+    const formatted2 = format(formattedDate, 'yyyy-MM-dd');
+    editDate.value = formatted2;
+  }
+
+  // task priority
   editPri.value = task.taskInfo.priority;
 };
 
@@ -538,7 +578,7 @@ export {
   taskFactory,
   tasksArr,
   appendTask,
-  loadTasks,
+  loadProjTasks,
   loadHomeTasks,
   createTaskForm,
   submitTask,
