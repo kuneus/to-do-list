@@ -500,6 +500,8 @@ const populateEdit = (task) => {
     );
     const formatted2 = format(formattedDate, 'yyyy-MM-dd');
     editDate.value = formatted2;
+  } else {
+    editDate.value = '';
   }
 
   // task priority
@@ -515,6 +517,7 @@ const updateTaskObj = (task) => {
 
   task.title = editTitle.value;
   task.taskInfo.description = editDesc.value;
+
   // update date with new format
   if (editDate.value !== '') {
     const parseDate = parseISO(editDate.value);
@@ -522,7 +525,7 @@ const updateTaskObj = (task) => {
     task.taskInfo.dueDate = formattedDate;
     task.taskInfo.unformattedDate = editDate.value;
   } else {
-    task.taskInfo.dueDate = 'No due date';
+    task.taskInfo.dueDate = '';
   }
   task.taskInfo.priority = editPri.value;
 };
@@ -531,9 +534,37 @@ const updateTaskObj = (task) => {
 const updateTaskEl = (task, index) => {
   const cardTitle = document.getElementsByClassName('card-title');
   const cardDate = document.getElementsByClassName('card-date');
+  const taskCard = document.getElementsByClassName('task-card');
 
+  // update title
   Array.from(cardTitle)[index].textContent = task.title;
-  Array.from(cardDate)[index].textContent = task.taskInfo.dueDate;
+
+  // update due date
+  if (task.taskInfo.dueDate !== '') {
+    Array.from(cardDate)[index].textContent = task.taskInfo.dueDate;
+  } else {
+    Array.from(cardDate)[index].textContent = 'No due date';
+  }
+
+  // turn this into array form in order to change color of border for priority
+  switch (task.taskInfo.priority) {
+    case '':
+      Array.from(taskCard)[index].style.border = 'solid 3px black';
+      break;
+    case 'low':
+      Array.from(taskCard)[index].style.border = 'solid 3px yellow';
+      break;
+    case 'medium':
+      Array.from(taskCard)[index].style.border = 'solid 3px Orange';
+      break;
+    case 'high':
+      Array.from(taskCard)[index].style.border = 'solid 3px red';
+      break;
+    case 'urgent':
+      Array.from(taskCard)[index].style.border = 'dotted 3px crimson';
+      break;
+    default:
+  }
 };
 
 // open edit task card with current task card clicked
@@ -589,13 +620,11 @@ mainBody.addEventListener('click', (e) => {
 
 // **** CURRENT TO-DO:
 
-// 2 ----> create delete button and delete function
+// 1 ----> create delete button and delete function
 
-// 3 ----> edit task card to indicate priority by changing border color?
+// 2 ----> button to display task description??
 
-// 4 ----> button to display task description??
-
-// 5 ----> for 'today', populate date with today's date
+// 3 ----> may need to add priority default to 'low' or add a 'none' option
 
 pageload();
 completeTask();
