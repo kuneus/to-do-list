@@ -1,7 +1,6 @@
 import './styles.css';
 import { projectPages } from './projects';
 import { pageload } from './pageload';
-import { today } from './today';
 import { format, parseISO, add, isWithinInterval, parse } from 'date-fns';
 import { completeTask } from './completed';
 
@@ -620,7 +619,7 @@ mainBody.addEventListener('click', (e) => {
 
 // **** CURRENT TO-DO:
 
-// 1 ----> create delete button and delete function
+// 1 ----> create delete function
 
 // 2 ----> button to display task description??
 
