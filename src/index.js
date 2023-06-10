@@ -2,7 +2,8 @@ import './styles.css';
 import { projectPages } from './projects';
 import { pageload } from './pageload';
 import { format, parseISO, add, isWithinInterval, parse } from 'date-fns';
-import { completeTask } from './completed';
+import { completeTask } from './completeTask';
+import { eventListeners } from './deleteTask';
 
 const projCont = document.getElementById('projects-list');
 const newProjectBtn = document.getElementById('new-project-btn');
@@ -627,6 +628,7 @@ mainBody.addEventListener('click', (e) => {
 
 pageload();
 completeTask();
+eventListeners();
 export {
   createAndAppend,
   ProjectFactory,
