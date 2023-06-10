@@ -3,7 +3,7 @@ import { projectPages } from './projects';
 import { pageload } from './pageload';
 import { format, parseISO, add, isWithinInterval, parse } from 'date-fns';
 import { completeTask } from './completeTask';
-import { eventListeners } from './deleteTask';
+import { eventListeners, trashArr, loadDeletedTasks } from './deleteTask';
 
 const projCont = document.getElementById('projects-list');
 const newProjectBtn = document.getElementById('new-project-btn');
@@ -238,10 +238,11 @@ const appendTask = (task, displayProj) => {
     task.taskInfo.dueDate,
     middleCont,
   );
-
   if (task.taskInfo.dueDate === '') {
     dateLine.textContent = 'No due date';
   }
+
+  addBorderStyle(task.taskInfo.priority, taskCard);
 
   // edit card button
   createAndAppend('button', 'edit-btn', null, 'edit', middleCont);
@@ -250,6 +251,27 @@ const appendTask = (task, displayProj) => {
 
   // empty bottom container of task card
   createAndAppend('div', null, null, null, taskCard);
+};
+
+const addBorderStyle = (taskPriority, taskCard) => {
+  switch (taskPriority) {
+    case '':
+      taskCard.style.border = 'solid 3px black';
+      break;
+    case 'low':
+      taskCard.style.border = 'solid 3px yellow';
+      break;
+    case 'medium':
+      taskCard.style.border = 'solid 3px Orange';
+      break;
+    case 'high':
+      taskCard.style.border = 'solid 3px red';
+      break;
+    case 'urgent':
+      taskCard.style.border = 'dotted 3px crimson';
+      break;
+    default:
+  }
 };
 
 // loads task container with tasks for the project page called
@@ -290,16 +312,10 @@ function loadHomeTasks(page) {
             })
           ) {
             appendTask(tasksArr[i], true);
-            // **** REMOVE TASK FORM, DO NOT NEED TO ADD TASKS HERE
           }
           break;
         case 'All Tasks': // append all tasks
           appendTask(tasksArr[i], true);
-          break;
-        case 'Trash': // if task was deleted
-          console.log('deleted tasks');
-          // **** NEED LOGIC FOR DELETING TASK ****
-          // **** REMOVE TASK FORM, DO NOT NEED TO ADD TASKS HERE
           break;
         default:
       }
@@ -309,8 +325,11 @@ function loadHomeTasks(page) {
       page === 'Completed'
     ) {
       appendTask(tasksArr[i], true);
-      // **** REMOVE TASK FORM, DO NOT NEED TO ADD TASKS HERE
     }
+  }
+
+  if (page === 'Trash') {
+    loadDeletedTasks();
   }
 }
 
@@ -546,25 +565,8 @@ const updateTaskEl = (task, index) => {
     Array.from(cardDate)[index].textContent = 'No due date';
   }
 
-  // turn this into array form in order to change color of border for priority
-  switch (task.taskInfo.priority) {
-    case '':
-      Array.from(taskCard)[index].style.border = 'solid 3px black';
-      break;
-    case 'low':
-      Array.from(taskCard)[index].style.border = 'solid 3px yellow';
-      break;
-    case 'medium':
-      Array.from(taskCard)[index].style.border = 'solid 3px Orange';
-      break;
-    case 'high':
-      Array.from(taskCard)[index].style.border = 'solid 3px red';
-      break;
-    case 'urgent':
-      Array.from(taskCard)[index].style.border = 'dotted 3px crimson';
-      break;
-    default:
-  }
+  // update border style based on priority
+  addBorderStyle(task.taskInfo.priority, Array.from(taskCard)[index]);
 };
 
 // open edit task card with current task card clicked
@@ -641,6 +643,7 @@ export {
   createTaskForm,
   submitTask,
   pageInfo,
+  addBorderStyle,
 };
 
 /*
