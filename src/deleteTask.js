@@ -1,5 +1,4 @@
-import { createAndAppend, tasksArr } from './index';
-import { addBorderStyle } from './createTask';
+import { createAndAppend, tasksArr, addBorderStyle } from './toExport';
 
 const trashArr = [];
 const cardValue = { value: '' };
@@ -35,6 +34,22 @@ const deleteTaskObj = () => {
   }
 };
 
+// remove task object from trash array
+const removeTaskObj = (restore) => {
+  for (let i = 0; i < trashArr.length; i += 1) {
+    // find the task obj by matching it for previously stored card value
+    if (trashArr[i].title === cardValue.value) {
+      const index = trashArr.indexOf(trashArr[i]);
+      // restore to task array if called to restore
+      if (restore === 'restore') {
+        tasksArr.push(trashArr[i]);
+      }
+      // remove from trash array
+      trashArr.splice(index, 1);
+    }
+  }
+};
+
 // remove task card for either perm delete or for restoring
 const removeTaskEl = (arg) => {
   const taskCard = document.getElementsByClassName('task-card');
@@ -57,22 +72,6 @@ const removeTaskEl = (arg) => {
       cardValue.value = cardTitleArr[i].textContent;
       cardArr[i].remove();
       removeTaskObj();
-    }
-  }
-};
-
-// remove task object from trash array
-const removeTaskObj = (restore) => {
-  for (let i = 0; i < trashArr.length; i += 1) {
-    // find the task obj by matching it for previously stored card value
-    if (trashArr[i].title === cardValue.value) {
-      const index = trashArr.indexOf(trashArr[i]);
-      // restore to task array if called to restore
-      if (restore === 'restore') {
-        tasksArr.push(trashArr[i]);
-      }
-      // remove from trash array
-      trashArr.splice(index, 1);
     }
   }
 };
@@ -155,10 +154,4 @@ const deleteEventListeners = () => {
 
 // event listener for restore button
 
-export {
-  trashArr,
-  deleteTaskEl,
-  deleteTaskObj,
-  deleteEventListeners,
-  loadDeletedTasks,
-};
+export { deleteEventListeners, loadDeletedTasks };

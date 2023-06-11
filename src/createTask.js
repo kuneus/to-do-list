@@ -5,28 +5,8 @@ import {
   pageInfo,
   projectsArr,
   tasksArr,
-} from './index';
-
-const addBorderStyle = (taskPriority, taskCard) => {
-  switch (taskPriority) {
-    case '':
-      taskCard.style.border = 'solid 3px black';
-      break;
-    case 'low':
-      taskCard.style.border = 'solid 3px yellow';
-      break;
-    case 'medium':
-      taskCard.style.border = 'solid 3px Orange';
-      break;
-    case 'high':
-      taskCard.style.border = 'solid 3px red';
-      break;
-    case 'urgent':
-      taskCard.style.border = 'dotted 3px crimson';
-      break;
-    default:
-  }
-};
+  addBorderStyle,
+} from './toExport';
 
 // append new task card
 const appendTask = (task, displayProj) => {
@@ -124,6 +104,7 @@ const submitTask = () => {
       }
     }
   } else {
+    // eslint-disable-next-line no-alert
     alert('please submit a title for your task!');
   }
 };
@@ -203,4 +184,4 @@ const createEventListener = () => {
   });
 };
 
-export { createEventListener, appendTask, addBorderStyle };
+export { createEventListener, appendTask };

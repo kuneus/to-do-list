@@ -1,4 +1,4 @@
-import { pageInfo, tasksArr } from './index';
+import { pageInfo, tasksArr } from './toExport';
 
 const updateCompletionStatus = (element) => {
   for (let i = 0; i < tasksArr.length; i += 1) {

@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { createAndAppend, taskFactory, tasksArr } from './index';
+import { createAndAppend, taskFactory, tasksArr } from './toExport';
 import { appendTask } from './createTask';
 
 // create form to add a new task

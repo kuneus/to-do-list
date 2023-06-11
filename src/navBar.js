@@ -1,6 +1,7 @@
-import { projectsArr, pageInfo } from './index';
+import { projectsArr, pageInfo } from './toExport';
 import { projectPages } from './projects';
 import { loadHomeTasks } from './taskLoader';
+import { loadDeletedTasks } from './deleteTask';
 
 // display task form for project pages, 'today', and 'upcoming'
 const toggleTaskFormDisplay = (display) => {
@@ -63,6 +64,11 @@ const openHomePage = (element) => {
 
   // load tasks of respective page
   loadHomeTasks(element.textContent);
+
+  // if Trash page is clicked
+  if (element.textContent === 'Trash') {
+    loadDeletedTasks();
+  }
 };
 
 const navEventListeners = () => {

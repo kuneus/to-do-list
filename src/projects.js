@@ -1,5 +1,5 @@
 import { loadProjTasks } from './taskLoader';
-import { ProjectFactory, projectsArr } from './index';
+import { ProjectFactory, projectsArr } from './toExport';
 
 // Change displays for new project buttons from 'none' to 'block'
 function changeBtnDisplay() {
@@ -26,6 +26,7 @@ const createNewProject = () => {
   const projectTextField = document.getElementById('project-textfield');
   const projName = projectTextField.value;
   if (projName === '') {
+    // eslint-disable-next-line no-alert
     alert('Please submit a project name');
   } else {
     const newProj = ProjectFactory(projName);
