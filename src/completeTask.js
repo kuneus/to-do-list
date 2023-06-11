@@ -4,7 +4,6 @@ const completeTask = () => {
   const mainBody = document.getElementById('main-body');
   mainBody.addEventListener('click', (e) => {
     if (e.target.classList.contains('checkbox')) {
-      //
       for (let i = 0; i < tasksArr.length; i += 1) {
         const taskTitle = tasksArr[i].title;
         // target element next to checkbox
@@ -19,14 +18,11 @@ const completeTask = () => {
           }
 
           // set currently selected task
-          // not needed currently
           pageInfo.currentTask = tasksArr[i];
         }
       }
     }
   });
-
-  // event listener for whenever a check is clicked
 };
 
 export { completeTask };

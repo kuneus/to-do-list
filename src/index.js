@@ -328,6 +328,7 @@ function loadHomeTasks(page) {
     }
   }
 
+  // separate function if Trash page is clicked
   if (page === 'Trash') {
     loadDeletedTasks();
   }

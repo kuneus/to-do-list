@@ -9,7 +9,7 @@ import {
   submitTask,
   pageInfo,
 } from './index';
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 
 // taskFactory(project, title)
 // return {project,title,taskInfo,setDueDate,setPriority,};
@@ -70,6 +70,7 @@ const pageload = () => {
     taskForm.style.display = 'block';
     addTask.style.display = 'none';
 
+    // if on 'today' page, display today's date for date input
     if (pageInfo.currentHomePage === 'Today') {
       const today = format(new Date(), 'yyyy-MM-dd');
       dateInput.value = today;

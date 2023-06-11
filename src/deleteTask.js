@@ -34,17 +34,49 @@ const deleteTaskObj = () => {
   }
 };
 
-// restore task object back to the task array
-// **** need restore button
-const restoreTaskObj = () => {
-  //
+// remove task card for either perm delete or for restoring
+const removeTaskEl = (arg) => {
+  const taskCard = document.getElementsByClassName('task-card');
+  const cardArr = Array.from(taskCard);
+  const cardTitle = document.getElementsByClassName('card-title');
+  const cardTitleArr = Array.from(cardTitle);
+  const restoreBtns = document.getElementsByClassName('restore-btn');
+  const restoreArr = Array.from(restoreBtns);
+  const permDeleteBtn = document.getElementsByClassName('perm-delete-btn');
+  const permDeleteArr = Array.from(permDeleteBtn);
+
+  // find the task card element to be removed by matching for its index
+  for (let i = 0; i < restoreArr.length; i += 1) {
+    if (arg === restoreArr[i]) {
+      // store the title of the task in an obj to be used for restoring obj fn
+      cardValue.value = cardTitleArr[i].textContent;
+      cardArr[i].remove();
+      removeTaskObj('restore');
+    } else if (arg === permDeleteArr[i]) {
+      cardValue.value = cardTitleArr[i].textContent;
+      cardArr[i].remove();
+      removeTaskObj();
+    }
+  }
 };
 
-const permDeleteTask = () => {
-  //
+// remove task object from trash array
+const removeTaskObj = (restore) => {
+  for (let i = 0; i < trashArr.length; i += 1) {
+    // find the task obj by matching it for previously stored card value
+    if (trashArr[i].title === cardValue.value) {
+      const index = trashArr.indexOf(trashArr[i]);
+      // restore to task array if called to restore
+      if (restore === 'restore') {
+        tasksArr.push(trashArr[i]);
+      }
+      // remove from trash array
+      trashArr.splice(index, 1);
+    }
+  }
 };
 
-// **** logic to create deleted object card, different from appendTask
+// append deleted tasks
 const appendDeletedTask = (task) => {
   const taskList = document.getElementById('task-list');
   const taskCard = document.createElement('div');
@@ -92,6 +124,7 @@ const appendDeletedTask = (task) => {
   createAndAppend('div', null, null, null, taskCard);
 };
 
+// appends all deleted tasks to Trash page
 const loadDeletedTasks = () => {
   for (let i = 0; i < trashArr.length; i += 1) {
     appendDeletedTask(trashArr[i]);
@@ -102,10 +135,20 @@ const loadDeletedTasks = () => {
 const eventListeners = () => {
   const mainBody = document.getElementById('main-body');
 
-  // event listener for delete button
   mainBody.addEventListener('click', (e) => {
-    deleteTaskEl(e.target);
-    deleteTaskObj();
+    // if delete button clicked
+    if (e.target.classList.contains('delete-btn')) {
+      deleteTaskEl(e.target);
+      deleteTaskObj();
+    }
+
+    // if restore or perm delete button clicked
+    if (
+      e.target.classList.contains('restore-btn') ||
+      e.target.classList.contains('perm-delete-btn')
+    ) {
+      removeTaskEl(e.target);
+    }
   });
 };
 
@@ -115,7 +158,6 @@ export {
   trashArr,
   deleteTaskEl,
   deleteTaskObj,
-  restoreTaskObj,
   eventListeners,
   loadDeletedTasks,
 };
