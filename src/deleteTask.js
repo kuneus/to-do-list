@@ -1,4 +1,5 @@
-import { createAndAppend, tasksArr, addBorderStyle } from './index';
+import { createAndAppend, tasksArr } from './index';
+import { addBorderStyle } from './createTask';
 
 const trashArr = [];
 const cardValue = { value: '' };

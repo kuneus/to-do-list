@@ -5,8 +5,85 @@ import {
   pageInfo,
   projectsArr,
   tasksArr,
-  appendTask,
 } from './index';
+
+const addBorderStyle = (taskPriority, taskCard) => {
+  switch (taskPriority) {
+    case '':
+      taskCard.style.border = 'solid 3px black';
+      break;
+    case 'low':
+      taskCard.style.border = 'solid 3px yellow';
+      break;
+    case 'medium':
+      taskCard.style.border = 'solid 3px Orange';
+      break;
+    case 'high':
+      taskCard.style.border = 'solid 3px red';
+      break;
+    case 'urgent':
+      taskCard.style.border = 'dotted 3px crimson';
+      break;
+    default:
+  }
+};
+
+// append new task card
+const appendTask = (task, displayProj) => {
+  const taskList = document.getElementById('task-list');
+  const taskCard = document.createElement('div');
+  taskCard.setAttribute('class', 'task-card');
+  taskList.prepend(taskCard);
+
+  // display project of task for home buttons
+  if (displayProj === true) {
+    createAndAppend('div', 'card-project', null, task.project, taskCard);
+  } else {
+    // create empty div if viewing projects
+    createAndAppend('div', 'card-project', null, null, taskCard);
+  }
+
+  // container for middle contents of task card
+  const middleCont = createAndAppend(
+    'div',
+    'midline-card',
+    null,
+    null,
+    taskCard,
+  );
+
+  const checkBox = createAndAppend('input', 'checkbox', null, null, middleCont);
+  checkBox.setAttribute('type', 'checkbox');
+  // check box if current task is complete
+  if (task.taskInfo.completion === true) {
+    checkBox.checked = true;
+  }
+
+  // display title of task
+  createAndAppend('div', 'card-title', null, task.title, middleCont);
+
+  // display due date of task
+  const dateLine = createAndAppend(
+    'div',
+    'card-date',
+    null,
+    task.taskInfo.dueDate,
+    middleCont,
+  );
+  if (task.taskInfo.dueDate === '') {
+    dateLine.textContent = 'No due date';
+  }
+
+  addBorderStyle(task.taskInfo.priority, taskCard);
+
+  // edit card button
+  createAndAppend('button', 'edit-btn', null, 'edit', middleCont);
+  // delete task button
+  createAndAppend('button', 'delete-btn', null, 'delete', middleCont);
+
+  // empty bottom container of task card
+  createAndAppend('div', null, null, null, taskCard);
+};
 
 // function to take task form input and submit task
 const submitTask = () => {
@@ -126,4 +203,4 @@ const createEventListener = () => {
   });
 };
 
-export { createEventListener };
+export { createEventListener, appendTask, addBorderStyle };

@@ -1,5 +1,6 @@
-import { pageInfo, tasksArr, addBorderStyle } from './index';
 import { parseISO, format, parse } from 'date-fns';
+import { pageInfo, tasksArr } from './index';
+import { addBorderStyle } from './createTask';
 
 // open/close edit task popup
 const toggleEdit = () => {

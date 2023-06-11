@@ -1,12 +1,6 @@
-import {
-  createAndAppend,
-  projectsArr,
-  taskFactory,
-  tasksArr,
-  appendTask,
-  pageInfo,
-} from './index';
 import { format } from 'date-fns';
+import { createAndAppend, taskFactory, tasksArr } from './index';
+import { appendTask } from './createTask';
 
 // create form to add a new task
 const createTaskForm = () => {
