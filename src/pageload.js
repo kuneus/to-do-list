@@ -1,18 +1,13 @@
 import {
   createAndAppend,
-  ProjectFactory,
   projectsArr,
   taskFactory,
   tasksArr,
   appendTask,
   createTaskForm,
-  submitTask,
   pageInfo,
 } from './index';
 import { format } from 'date-fns';
-
-// taskFactory(project, title)
-// return {project,title,taskInfo,setDueDate,setPriority,};
 
 const pageload = () => {
   const mainBody = document.getElementById('main-body');
@@ -27,13 +22,7 @@ const pageload = () => {
   );
 
   // display title of page
-  const pageTitle = createAndAppend(
-    'div',
-    null,
-    'page-title',
-    'All Tasks',
-    mainHeader,
-  );
+  createAndAppend('div', null, 'page-title', 'All Tasks', mainHeader);
 
   // container for new task buttons
   const newTaskCont = createAndAppend(
@@ -45,70 +34,15 @@ const pageload = () => {
   );
 
   // button to open new task form
-  const addTask = createAndAppend(
-    'button',
-    null,
-    'add-task-btn',
-    'Add to-do',
-    newTaskCont,
-  );
+  createAndAppend('button', null, 'add-task-btn', 'Add to-do', newTaskCont);
 
   // container for new task form
   createTaskForm(true);
 
   const taskForm = document.getElementById('task-form');
-  const selectInput = document.getElementById('project-select');
-  const textInput = document.getElementById('project-input');
-  const createTaskBtn = document.getElementById('create-task-btn');
-  const dateInput = document.getElementById('date-input');
 
   // default to hidden task form
   taskForm.style.display = 'none';
-
-  // display task form container
-  addTask.addEventListener('click', () => {
-    taskForm.style.display = 'block';
-    addTask.style.display = 'none';
-
-    // if on 'today' page, display today's date for date input
-    if (pageInfo.currentHomePage === 'Today') {
-      const today = format(new Date(), 'yyyy-MM-dd');
-      dateInput.value = today;
-    } else {
-      dateInput.value = '';
-    }
-
-    // clear project select options
-    selectInput.innerHTML = '';
-
-    // update select options with current projects
-    for (let i = 0; i < projectsArr.length; i += 1) {
-      const option = createAndAppend(
-        'option',
-        null,
-        null,
-        projectsArr[i].title,
-        selectInput,
-      );
-      option.value = projectsArr[i].title;
-    }
-  });
-
-  const taskFormBtns = document.getElementsByClassName('task-form-btns');
-
-  // event listener to submit new to-do
-  createTaskBtn.addEventListener('click', () => {
-    submitTask();
-  });
-
-  // hide task form and return to default
-  Array.from(taskFormBtns).forEach((button) => {
-    button.addEventListener('click', () => {
-      taskForm.style.display = 'none';
-      addTask.style.display = 'block';
-      textInput.value = '';
-    });
-  });
 
   // container for list of tasks
   createAndAppend('div', null, 'task-list', null, mainBody);
@@ -193,6 +127,8 @@ const pageload = () => {
       editPopUp,
     );
 
+    const noPri = createAndAppend('option', null, null, '', editPri);
+    noPri.value = '';
     const lowPri = createAndAppend('option', null, null, 'Low', editPri);
     lowPri.value = 'low';
     const medPri = createAndAppend('option', null, null, 'Medium', editPri);

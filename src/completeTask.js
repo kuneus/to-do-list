@@ -1,4 +1,4 @@
-import { pageInfo, tasksArr, projectsArr } from './index';
+import { pageInfo, tasksArr } from './index';
 
 const completeTask = () => {
   const mainBody = document.getElementById('main-body');

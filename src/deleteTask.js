@@ -132,7 +132,7 @@ const loadDeletedTasks = () => {
 };
 
 // event listeners for delete-related buttons
-const eventListeners = () => {
+const deleteEventListeners = () => {
   const mainBody = document.getElementById('main-body');
 
   mainBody.addEventListener('click', (e) => {
@@ -158,6 +158,6 @@ export {
   trashArr,
   deleteTaskEl,
   deleteTaskObj,
-  eventListeners,
+  deleteEventListeners,
   loadDeletedTasks,
 };

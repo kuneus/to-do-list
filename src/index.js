@@ -3,7 +3,8 @@ import { projectPages } from './projects';
 import { pageload } from './pageload';
 import { format, parseISO, add, isWithinInterval, parse } from 'date-fns';
 import { completeTask } from './completeTask';
-import { eventListeners, trashArr, loadDeletedTasks } from './deleteTask';
+import { deleteEventListeners, loadDeletedTasks } from './deleteTask';
+import { createEventListener } from './createTask';
 
 const projCont = document.getElementById('projects-list');
 const newProjectBtn = document.getElementById('new-project-btn');
@@ -381,49 +382,6 @@ const toggleTaskFormDisplay = (display) => {
   }
 };
 
-// function to take task form input and submit task
-const submitTask = () => {
-  const textInput = document.getElementById('project-input');
-  const dateInput = document.getElementById('date-input');
-  const selectInput = document.getElementById('project-select');
-  const formattedToday = format(new Date(), 'yyyy-MM-dd');
-
-  if (textInput.value !== '') {
-    const newTask = taskFactory(selectInput.value, textInput.value);
-
-    // format date input
-    if (dateInput.value !== '') {
-      const parseDate = parseISO(dateInput.value);
-      const formattedDate = format(parseDate, 'MM/dd/yyyy');
-      newTask.setDueDate(formattedDate);
-      newTask.taskInfo.unformattedDate = dateInput.value;
-    } else {
-      newTask.setDueDate('');
-    }
-
-    // check if in project module
-    if (pageInfo.currentProject !== '') {
-      // set task's project as current project selected without
-      // appending the project title to each task card
-      newTask.project = pageInfo.currentProject;
-      tasksArr.push(newTask);
-      appendTask(newTask, false);
-    } else {
-      // if in home page module
-      tasksArr.push(newTask);
-      // append task to current task list if not on Today page
-      if (pageInfo.currentHomePage !== 'Today') {
-        appendTask(newTask, true);
-      } else if (dateInput.value === formattedToday) {
-        // if in Today page, only append the new task if it's due today
-        appendTask(newTask, true);
-      }
-    }
-  } else {
-    alert('please submit a title for your task!');
-  }
-};
-
 // <----- ************************ ----->
 // <----- SIDE BTN EVENT LISTENERS ----->
 // <----- ************************ ----->
@@ -623,15 +581,14 @@ mainBody.addEventListener('click', (e) => {
 
 // **** CURRENT TO-DO:
 
-// 1 ----> create delete function
+// 1 ----> may need to add priority default to 'low' or add a 'none' option
 
-// 2 ----> button to display task description??
-
-// 3 ----> may need to add priority default to 'low' or add a 'none' option
+// 1 -----> create createTask and editTask modules
 
 pageload();
 completeTask();
-eventListeners();
+deleteEventListeners();
+createEventListener();
 export {
   createAndAppend,
   ProjectFactory,
@@ -642,7 +599,6 @@ export {
   loadProjTasks,
   loadHomeTasks,
   createTaskForm,
-  submitTask,
   pageInfo,
   addBorderStyle,
 };
@@ -655,46 +611,5 @@ Remember SOLID principles!!
 -Liskov substitution principle
 -Interface segregation principle
 -Dependency inversion principle
-
-**** OUTLINE ****
-
-MODULES:
--pageload
--today
--upcoming
--all tasks
--completed
--trash
--projects
-
-
-FUNCTIONS, OBJ, & STUFF:
-- newProject
-    -> push to project array
-- to-do factory fn / class
-    -> title
-    -> description
-    -> due date
-    -> priority
-    -> completion status
-    -> push to-do to taskArr
-- changePage
-    -> change page view to module clicked
-- deleteTask
-    -> remove from tasksArr and push to trashArr
-- completeTask
-    -> push to doneArr
-- expandTask: display to-do information
-- editTask
-- setPageStatus
-
-
--ARRAYS:
-    -> tasksArr
-    -> projectsArr
-    -> trashArr
-    -> doneArr
-
-
 
 */
