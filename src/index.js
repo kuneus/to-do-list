@@ -5,6 +5,7 @@ import { format, parseISO, add, isWithinInterval, parse } from 'date-fns';
 import { completeTask } from './completeTask';
 import { deleteEventListeners, loadDeletedTasks } from './deleteTask';
 import { createEventListener } from './createTask';
+import { editEventListeners } from './editTask';
 
 const projCont = document.getElementById('projects-list');
 const newProjectBtn = document.getElementById('new-project-btn');
@@ -13,7 +14,6 @@ const submitProjectBtn = document.getElementById('new-project-submit');
 const projectBtns = document.getElementsByClassName('project-btns');
 const projectTextField = document.getElementById('project-textfield');
 const homeBtns = document.getElementsByClassName('home-btns');
-const mainBody = document.getElementById('main-body');
 
 // create HTML element and append to DOM
 function createAndAppend(elementType, eleClass, eleID, eleText, eleParent) {
@@ -94,108 +94,6 @@ function taskFactory(project, title) {
 // <----- ****************** ----->
 // <----- TASK FUNCTIONALITY ----->
 // <----- ****************** ----->
-
-const createTaskForm = (bool) => {
-  // container for new task form
-  const newTaskCont = document.getElementById('new-task-cont');
-  const taskForm = createAndAppend('div', null, 'task-form', null, newTaskCont);
-
-  // container for title label and input
-  const titleCont = createAndAppend(
-    'div',
-    'form-title-cont',
-    null,
-    null,
-    taskForm,
-  );
-
-  // label for title of task
-  const textLabel = createAndAppend('label', null, null, 'Title:', titleCont);
-  textLabel.setAttribute('for', 'project-input');
-
-  // text input for inputting title of task
-  const textInput = createAndAppend(
-    'input',
-    null,
-    'project-input',
-    null,
-    titleCont,
-  );
-  textInput.setAttribute('placeholder', 'What will you do?');
-
-  // container for date label and input
-  const dateCont = createAndAppend(
-    'div',
-    'form-date-cont',
-    null,
-    null,
-    taskForm,
-  );
-
-  // label for Date
-  const dateLabel = createAndAppend('label', null, null, 'Due Date:', dateCont);
-  dateLabel.setAttribute('for', 'date-input');
-
-  // select due date
-  const dateInput = createAndAppend(
-    'input',
-    null,
-    'date-input',
-    null,
-    dateCont,
-  );
-  dateInput.setAttribute('type', 'date');
-
-  // select options for projects
-  if (bool === true) {
-    const selectCont = createAndAppend(
-      'div',
-      null,
-      'form-select-cont',
-      null,
-      taskForm,
-    );
-
-    // label for project selection
-    const projLabel = createAndAppend(
-      'label',
-      null,
-      null,
-      'Project:',
-      selectCont,
-    );
-    projLabel.setAttribute('for', 'project-select');
-
-    createAndAppend('select', null, 'project-select', null, selectCont);
-  }
-
-  const formBtnCont = createAndAppend(
-    'div',
-    'form-btn-cont',
-    null,
-    null,
-    taskForm,
-  );
-
-  // button to submit new task
-  createAndAppend(
-    'button',
-    'task-form-btns',
-    'create-task-btn',
-    'Add',
-    formBtnCont,
-  );
-
-  // button to cancel adding new task
-  createAndAppend(
-    'button',
-    'task-form-btns',
-    'cancel-task-btn',
-    'Cancel',
-    formBtnCont,
-  );
-  taskForm.style.display = 'none';
-};
 
 // append new task card
 const appendTask = (task, displayProj) => {
@@ -443,152 +341,16 @@ Array.from(homeBtns).forEach((button) => {
   });
 });
 
-// <----- *********************** ----->
-// <----- EDIT TASK FUNCTIONALITY ----->
-// <----- *********************** ----->
-
-// open/close edit task popup
-const toggleEdit = () => {
-  const popupCont = document.getElementById('edit-popup');
-  if (popupCont.style.display === 'block') {
-    popupCont.style.display = 'none';
-  } else if (popupCont.style.display === 'none') {
-    popupCont.style.display = 'block';
-  }
-};
-
-// populate edit popup with clicked task's information to edit
-const populateEdit = (task) => {
-  const editTitle = document.getElementById('edit-title');
-  const editDesc = document.getElementById('edit-desc');
-  const editDate = document.getElementById('edit-date');
-  const editPri = document.getElementById('edit-priority');
-  // task title
-  editTitle.value = task.title;
-
-  // task description
-  editDesc.value = task.taskInfo.description;
-
-  // task due date
-  if (task.taskInfo.dueDate !== '') {
-    const formattedDate = parse(
-      task.taskInfo.dueDate,
-      'MM/dd/yyyy',
-      new Date(),
-    );
-    const formatted2 = format(formattedDate, 'yyyy-MM-dd');
-    editDate.value = formatted2;
-  } else {
-    editDate.value = '';
-  }
-
-  // task priority
-  editPri.value = task.taskInfo.priority;
-};
-
-// update currently selected task object following save edit
-const updateTaskObj = (task) => {
-  const editTitle = document.getElementById('edit-title');
-  const editDesc = document.getElementById('edit-desc');
-  const editDate = document.getElementById('edit-date');
-  const editPri = document.getElementById('edit-priority');
-
-  task.title = editTitle.value;
-  task.taskInfo.description = editDesc.value;
-
-  // update date with new format
-  if (editDate.value !== '') {
-    const parseDate = parseISO(editDate.value);
-    const formattedDate = format(parseDate, 'MM/dd/yyyy');
-    task.taskInfo.dueDate = formattedDate;
-    task.taskInfo.unformattedDate = editDate.value;
-  } else {
-    task.taskInfo.dueDate = '';
-  }
-  task.taskInfo.priority = editPri.value;
-};
-
-// update currently selected task element following save edit
-const updateTaskEl = (task, index) => {
-  const cardTitle = document.getElementsByClassName('card-title');
-  const cardDate = document.getElementsByClassName('card-date');
-  const taskCard = document.getElementsByClassName('task-card');
-
-  // update title
-  Array.from(cardTitle)[index].textContent = task.title;
-
-  // update due date
-  if (task.taskInfo.dueDate !== '') {
-    Array.from(cardDate)[index].textContent = task.taskInfo.dueDate;
-  } else {
-    Array.from(cardDate)[index].textContent = 'No due date';
-  }
-
-  // update border style based on priority
-  addBorderStyle(task.taskInfo.priority, Array.from(taskCard)[index]);
-};
-
-// open edit task card with current task card clicked
-mainBody.addEventListener('click', (e) => {
-  if (e.target.classList.contains('edit-btn')) {
-    // identify title of task
-    const findTitle = e.target.previousElementSibling.previousElementSibling;
-
-    // find the task with corresponding title
-    for (let i = 0; i < tasksArr.length; i += 1) {
-      if (tasksArr[i].title === findTitle.textContent) {
-        // update current task selected
-        pageInfo.currentTask = tasksArr[i];
-        toggleEdit();
-        populateEdit(tasksArr[i]);
-      }
-    }
-
-    // find current element selected within the class array
-    const elementClass = document.getElementsByClassName('card-title');
-    const arr = Array.from(elementClass);
-    for (let i = 0; i < arr.length; i += 1) {
-      if (findTitle === arr[i]) {
-        pageInfo.currentElement = i;
-      }
-    }
-  }
-});
-
-// close edit popup when 'save' or 'cancel' is clicked
-mainBody.addEventListener('click', (e) => {
-  if (
-    e.target.getAttribute('id') === 'cancel-edit-btn' ||
-    e.target.getAttribute('id') === 'save-task-btn'
-  ) {
-    toggleEdit();
-  }
-});
-
-// event listener for 'save' button when editing todo card
-mainBody.addEventListener('click', (e) => {
-  if (e.target.getAttribute('id') === 'save-task-btn') {
-    // find current task
-    for (let i = 0; i < tasksArr.length; i += 1) {
-      if (tasksArr[i] === pageInfo.currentTask) {
-        // update the task object and its DOM elements
-        updateTaskObj(tasksArr[i]);
-        updateTaskEl(tasksArr[i], pageInfo.currentElement);
-      }
-    }
-  }
-});
-
 // **** CURRENT TO-DO:
+// 1 -----> transfer code to editTask module
 
-// 1 ----> may need to add priority default to 'low' or add a 'none' option
-
-// 1 -----> create createTask and editTask modules
+// 2 ----> may need to add priority default to 'low' or add a 'none' option
 
 pageload();
 completeTask();
 deleteEventListeners();
 createEventListener();
+editEventListeners();
 export {
   createAndAppend,
   ProjectFactory,
@@ -598,7 +360,6 @@ export {
   appendTask,
   loadProjTasks,
   loadHomeTasks,
-  createTaskForm,
   pageInfo,
   addBorderStyle,
 };

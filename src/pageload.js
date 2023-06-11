@@ -4,10 +4,110 @@ import {
   taskFactory,
   tasksArr,
   appendTask,
-  createTaskForm,
   pageInfo,
 } from './index';
 import { format } from 'date-fns';
+
+// create form to add a new task
+const createTaskForm = () => {
+  // container for new task form
+  const newTaskCont = document.getElementById('new-task-cont');
+  const taskForm = createAndAppend('div', null, 'task-form', null, newTaskCont);
+
+  // container for title label and input
+  const titleCont = createAndAppend(
+    'div',
+    'form-title-cont',
+    null,
+    null,
+    taskForm,
+  );
+
+  // label for title of task
+  const textLabel = createAndAppend('label', null, null, 'Title:', titleCont);
+  textLabel.setAttribute('for', 'project-input');
+
+  // text input for inputting title of task
+  const textInput = createAndAppend(
+    'input',
+    null,
+    'project-input',
+    null,
+    titleCont,
+  );
+  textInput.setAttribute('placeholder', 'What will you do?');
+
+  // container for date label and input
+  const dateCont = createAndAppend(
+    'div',
+    'form-date-cont',
+    null,
+    null,
+    taskForm,
+  );
+
+  // label for Date
+  const dateLabel = createAndAppend('label', null, null, 'Due Date:', dateCont);
+  dateLabel.setAttribute('for', 'date-input');
+
+  // select due date
+  const dateInput = createAndAppend(
+    'input',
+    null,
+    'date-input',
+    null,
+    dateCont,
+  );
+  dateInput.setAttribute('type', 'date');
+
+  // select options for projects
+  const selectCont = createAndAppend(
+    'div',
+    null,
+    'form-select-cont',
+    null,
+    taskForm,
+  );
+
+  // label for project selection
+  const projLabel = createAndAppend(
+    'label',
+    null,
+    null,
+    'Project:',
+    selectCont,
+  );
+  projLabel.setAttribute('for', 'project-select');
+
+  createAndAppend('select', null, 'project-select', null, selectCont);
+
+  const formBtnCont = createAndAppend(
+    'div',
+    'form-btn-cont',
+    null,
+    null,
+    taskForm,
+  );
+
+  // button to submit new task
+  createAndAppend(
+    'button',
+    'task-form-btns',
+    'create-task-btn',
+    'Add',
+    formBtnCont,
+  );
+
+  // button to cancel adding new task
+  createAndAppend(
+    'button',
+    'task-form-btns',
+    'cancel-task-btn',
+    'Cancel',
+    formBtnCont,
+  );
+  taskForm.style.display = 'none';
+};
 
 const pageload = () => {
   const mainBody = document.getElementById('main-body');
@@ -37,7 +137,7 @@ const pageload = () => {
   createAndAppend('button', null, 'add-task-btn', 'Add to-do', newTaskCont);
 
   // container for new task form
-  createTaskForm(true);
+  createTaskForm();
 
   const taskForm = document.getElementById('task-form');
 
