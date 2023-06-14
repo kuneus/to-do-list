@@ -78,19 +78,19 @@ function taskFactory(project, title) {
 const addBorderStyle = (taskPriority, taskCard) => {
   switch (taskPriority) {
     case '':
-      taskCard.style.border = 'solid 3px black';
+      taskCard.style.borderLeft = '';
       break;
     case 'low':
-      taskCard.style.border = 'solid 3px yellow';
+      taskCard.style.borderLeft = 'solid 15px yellow';
       break;
     case 'medium':
-      taskCard.style.border = 'solid 3px Orange';
+      taskCard.style.borderLeft = 'solid 15px Orange';
       break;
     case 'high':
-      taskCard.style.border = 'solid 3px red';
+      taskCard.style.borderLeft = 'solid 15px red';
       break;
     case 'urgent':
-      taskCard.style.border = 'dotted 3px crimson';
+      taskCard.style.borderLeft = 'solid 15px crimson';
       break;
     default:
   }

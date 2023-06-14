@@ -94,6 +94,9 @@ video {
 
 :root {
   --container-bg: rgba(231, 255, 250, 0.791);
+  --green-add: rgb(113, 198, 113);
+  --blue-create: rgb(118, 118, 255);
+  --red-cancel: rgb(255, 118, 118);
 }
 
 body {
@@ -102,13 +105,20 @@ body {
     'sidebar header'
     'sidebar main'
     'footer main';
-  grid-template-rows: auto 91vh auto;
+  grid-template-rows: 6vh 91vh 3vh;
   grid-template-columns: 1fr 4fr;
   background-image: url(images/bg.png);
   background-size: cover;
 }
 
-/* **** HEADER **** */
+svg {
+  pointer-events: none;
+}
+
+/* ****************** */
+/* <---- HEADER ----> */
+/* ****************** */
+
 .header {
   font-size: 1.5rem;
   display: flex;
@@ -124,7 +134,10 @@ body {
   font-size: 2rem;
 }
 
-/* **** SIDEBAR **** */
+/* ********************* */
+/* <----- SIDEBAR -----> */
+/* ********************* */
+
 .sidebar {
   grid-area: sidebar;
   display: flex;
@@ -182,6 +195,15 @@ ul {
   overflow-y: scroll;
 }
 
+*::-webkit-scrollbar {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgb(221, 221, 221);
+  border-radius: 10px;
+}
+
 /* container for new project buttons */
 .project-btn-cont {
   display: flex;
@@ -195,15 +217,14 @@ ul {
   margin: 0px;
   border-radius: 15px;
   border-style: none;
-  background-color: rgb(113, 198, 113);
+  background-color: var(--green-add);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 20px;
 }
 
-.project-btns:hover,
-.project-btns:focus {
+button:hover {
   filter: brightness(120%);
 }
 
@@ -233,7 +254,7 @@ ul {
 
 /* submit new project */
 #new-project-submit {
-  background-color: rgb(118, 118, 255);
+  background-color: var(--blue-create);
   border: none;
   border-radius: 10px;
   padding: 5px;
@@ -241,60 +262,168 @@ ul {
 
 /* cancel new project submission */
 #new-project-cancel {
-  background-color: rgb(255, 118, 118);
+  background-color: var(--red-cancel);
   border: none;
   border-radius: 10px;
   padding: 5px;
 }
 
-/* **** MAIN **** */
+/* ****************** */
+/* <----- MAIN -----> */
+/* ****************** */
+
 .main {
   grid-area: main;
   margin: 50px;
-  background-color: var(--container-bg);
+  /* background-color: var(--container-bg); */
   border-radius: 15px;
   padding: 50px;
   position: relative;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 
+/* container for both page title and task form */
 #task-header {
   font-size: 2rem;
 }
 
+/* Title of page */
+#page-title {
+  margin-bottom: 20px;
+}
+
+/* container for add task btn and task form */
 #new-task-cont {
   width: 100%;
-  background-color: white;
-  margin-top: 40px;
+  height: 100%;
 }
 
+/* button for opening task form */
+#add-task-btn {
+  height: 50px;
+  width: 100%;
+  border-radius: 15px;
+  background-color: rgba(227, 227, 227, 0.435);
+  border-style: none;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding-left: 20px;
+  font-size: 1.2rem;
+}
+
+#add-task-btn:hover {
+  background-color: var(--green-add);
+  cursor: pointer;
+}
+
+/* container for form elements for submitting new task */
 #task-form {
+  height: auto;
+  font-size: 1.2rem;
+  border-radius: 15px;
+  background-color: var(--container-bg);
+  padding-top: 5px;
+  /* padding: 20px; */
+}
+
+/* line elements for task form */
+.form-title-cont,
+.form-date-cont,
+#form-select-cont {
+  /* display: flex;
+  flex-direction: row; */
+  display: grid;
+  grid-template-columns: auto 85%;
+  margin: 10px;
+}
+
+.form-btn-cont {
   width: 100%;
 }
 
+#create-task-btn,
+#cancel-task-btn {
+  width: 50%;
+  border-style: none;
+  height: 30px;
+}
+
+#create-task-btn {
+  border-bottom-left-radius: 15px;
+  border-right: solid 1px gray;
+  background-color: var(--blue-create);
+}
+
+#cancel-task-btn {
+  border-bottom-right-radius: 15px;
+  background-color: var(--red-cancel);
+}
+
+/* container for list of tasks */
 #task-list {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  height: 100%;
+  height: 80%;
+  /* overflow-y: scroll;
+  overflow-x: hidden; */
 }
 
+/* individual container for each task */
 .task-card {
   display: grid;
-  grid-template-rows: 1fr 3fr 1fr;
-  /* justify-content: center; */
+  grid-template-rows: 1fr 1fr 1fr;
   align-items: center;
-  border: solid 3px black;
   border-radius: 15px;
+
   gap: 5px;
+  background-color: var(--container-bg);
 }
 
+/* project title on task card */
+.card-project {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  background-color: white;
+  padding-top: 0px;
+  height: 100%;
+  border-top-right-radius: 15px;
+}
+
+/* middle line for each task card */
 .midline-card {
   display: grid;
-  grid-template-columns: 20px 80% auto auto auto;
+  grid-template-columns: 20px 65% 80px 25px 25px;
   gap: 10px;
 }
 
+/* title of task card */
+.card-title {
+  overflow-wrap: anywhere;
+}
+
+/* btns for edit/delete/restore/perm delete  */
+.card-btns {
+  background: none;
+  border-style: none;
+  height: 25px;
+  width: 25px;
+}
+
+.card-btns:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+/* popup container for editing a task */
 #edit-popup {
   height: 200px;
   width: 200px;
@@ -307,9 +436,26 @@ ul {
   bottom: 50%;
 }
 
-/* **** FOOTER **** */
+/* ****************** */
+/* <---- FOOTER ----> */
+/* ****************** */
+
 footer {
   grid-area: footer;
   padding: 10px;
   background-color: var(--container-bg);
 }
+
+/* problem list
+
+1. prevent page from expanding vertically
+2. only scrollable elements should be project list on sidebar and task list
+3. style add task button
+4. style task form
+5. style edit popup
+6. style task card
+7. style edit/delete buttons
+
+
+
+*/

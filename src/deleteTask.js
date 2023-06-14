@@ -83,7 +83,7 @@ const appendDeletedTask = (task) => {
   taskCard.setAttribute('class', 'task-card');
   taskList.prepend(taskCard);
 
-  // display project of task for home buttons
+  // display project of task
   createAndAppend('div', 'card-project', null, task.project, taskCard);
 
   // container for middle contents of task card
@@ -115,10 +115,27 @@ const appendDeletedTask = (task) => {
 
   addBorderStyle(task.taskInfo.priority, taskCard);
 
-  // permanently delete task button
-  createAndAppend('button', 'perm-delete-btn', null, 'delete', middleCont);
   // restore task button
-  createAndAppend('button', 'restore-btn', null, 'restore', middleCont);
+  const restoreBtn = createAndAppend(
+    'button',
+    'restore-btn card-btns',
+    null,
+    'restore',
+    middleCont,
+  );
+  restoreBtn.innerHTML =
+    '<svg width="25px" height="25px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" ><path d="M0 0h48v48H0z" fill="none"/><g id="Shopicon"><path d="M10,22v2c0,7.72,6.28,14,14,14s14-6.28,14-14s-6.28-14-14-14h-4V4l-8,8l8,8v-6h4c5.514,0,10,4.486,10,10s-4.486,10-10,10s-10-4.486-10-10v-2H10z"/></g></svg>';
+
+  // permanently delete task button
+  const permDel = createAndAppend(
+    'button',
+    'perm-delete-btn card-btns',
+    null,
+    'delete',
+    middleCont,
+  );
+  permDel.innerHTML =
+    '<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="25px" height="25px" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/></svg>';
 
   // empty bottom container of task card
   createAndAppend('div', null, null, null, taskCard);
