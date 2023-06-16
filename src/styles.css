@@ -109,6 +109,7 @@ body {
   grid-template-columns: 1fr 4fr;
   background-image: url(images/bg.png);
   background-size: cover;
+  overflow-y: hidden;
 }
 
 svg {
@@ -126,8 +127,6 @@ svg {
   gap: 20px;
   padding-left: 30px;
   grid-area: header;
-
-  /* background-color: rgba(231, 255, 250, 0.791); */
 }
 
 .header div:first-child {
@@ -274,10 +273,10 @@ button:hover {
 
 .main {
   grid-area: main;
-  margin: 50px;
+  /* margin: 50px; */
   /* background-color: var(--container-bg); */
   border-radius: 15px;
-  padding: 50px;
+  /* padding: 50px; */
   position: relative;
   height: 80%;
   display: flex;
@@ -285,6 +284,7 @@ button:hover {
   gap: 20px;
   overflow-y: scroll;
   overflow-x: hidden;
+  width: clamp(300px, 90%, 1000px);
 }
 
 /* container for both page title and task form */
@@ -329,7 +329,13 @@ button:hover {
   border-radius: 15px;
   background-color: var(--container-bg);
   padding-top: 5px;
-  /* padding: 20px; */
+}
+
+#task-form input,
+#task-form select {
+  border-radius: 10px;
+  border-style: none;
+  text-indent: 5px;
 }
 
 /* line elements for task form */
@@ -367,47 +373,54 @@ button:hover {
 
 /* container for list of tasks */
 #task-list {
-  display: flex;
-  flex-direction: column;
   gap: 15px;
-  height: 80%;
-  /* overflow-y: scroll;
-  overflow-x: hidden; */
+  height: 90%;
+  display: grid;
+  grid-template-rows: minmax(min-content, max-content);
+  grid-auto-rows: minmax(min-content, max-content);
 }
 
 /* individual container for each task */
 .task-card {
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 1fr max-content 1fr;
   align-items: center;
   border-radius: 15px;
-
   gap: 5px;
   background-color: var(--container-bg);
+  /* box-shadow: 3px 3px 15px 1px rgba(0, 0, 0, 0.262); */
 }
 
 /* project title on task card */
 .card-project {
   display: flex;
   justify-content: center;
+  justify-self: center;
   align-items: center;
   font-size: 0.8rem;
   background-color: white;
+  width: 200px;
   padding-top: 0px;
   height: 100%;
-  border-top-right-radius: 15px;
+  border-bottom-right-radius: 25px;
+  border-bottom-left-radius: 25px;
 }
 
 /* middle line for each task card */
 .midline-card {
-  display: grid;
-  grid-template-columns: 20px 65% 80px 25px 25px;
+  /* display: grid;
+  grid-template-columns: 20px minmax(150px, 75%) 80px 25px 25px;
+  grid-auto-flow: row; */
   gap: 10px;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 /* title of task card */
 .card-title {
   overflow-wrap: anywhere;
+  width: clamp(250px, 75%, 1000px);
 }
 
 /* btns for edit/delete/restore/perm delete  */
@@ -416,11 +429,21 @@ button:hover {
   border-style: none;
   height: 25px;
   width: 25px;
+
+  /* center SVG in each button */
+  display: grid;
+  justify-content: center;
 }
 
 .card-btns:hover {
   transform: scale(1.1);
   cursor: pointer;
+}
+
+/* SVG for delete btn */
+#delete-svg {
+  fill: transparent;
+  stroke: black;
 }
 
 /* popup container for editing a task */
@@ -450,11 +473,13 @@ footer {
 
 1. prevent page from expanding vertically
 2. only scrollable elements should be project list on sidebar and task list
-3. style add task button
+3. style Header title
 4. style task form
 5. style edit popup
 6. style task card
-7. style edit/delete buttons
+  ----> improve mobile responsiveness. change midline row to column display with
+  smaller screen size. edit and delete button on their own row
+
 
 
 

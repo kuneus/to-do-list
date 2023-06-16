@@ -84,25 +84,30 @@ const updateTaskEl = (task, index) => {
 
 // when edit btn clicked, invokes all steps involved for opening the edit pop up
 const openEditScreen = (element) => {
-  // identify title of task
-  const findTitle = element.previousElementSibling.previousElementSibling;
+  const editBtn = document.getElementsByClassName('edit-btn');
+  const editArr = Array.from(editBtn);
+  const cardTitle = document.getElementsByClassName('card-title');
+  const cardTitleArr = Array.from(cardTitle);
 
-  // find the task with corresponding title
-  for (let i = 0; i < tasksArr.length; i += 1) {
-    if (tasksArr[i].title === findTitle.textContent) {
-      // update current task selected
-      pageInfo.currentTask = tasksArr[i];
-      toggleEdit();
-      populateEdit(tasksArr[i]);
-    }
-  }
+  // loop through array of edit btns to identify the element index clicked
+  for (let i = 0; i < editArr.length; i += 1) {
+    // first, match the clicked edit button to its index
+    if (element === editArr[i]) {
+      // find title of task by matching for the same index
+      const currentTitle = cardTitleArr[i].textContent;
 
-  // find current element selected within the class array
-  const elementClass = document.getElementsByClassName('card-title');
-  const arr = Array.from(elementClass);
-  for (let i = 0; i < arr.length; i += 1) {
-    if (findTitle === arr[i]) {
+      // set the element selected based on its index
       pageInfo.currentElement = i;
+
+      // use title of task to find it within the task array
+      for (let l = 0; l < tasksArr.length; l += 1) {
+        if (tasksArr[l].title === currentTitle) {
+          // update current task selected
+          pageInfo.currentTask = tasksArr[l];
+          toggleEdit();
+          populateEdit(tasksArr[l]);
+        }
+      }
     }
   }
 };

@@ -1,11 +1,10 @@
 import { parseISO, format, add, isWithinInterval } from 'date-fns';
 import { tasksArr } from './toExport';
 import { appendTask } from './createTask';
-// import { loadDeletedTasks } from './deleteTask';
 
 // loads tasks for the home page called
 function loadHomeTasks(page) {
-  const date = new Date(); // not formatted
+  const date = new Date();
   const currentDate = format(date, 'MM/dd/yyy');
   const sevenDays = add(date, { days: 7 });
 
@@ -43,11 +42,6 @@ function loadHomeTasks(page) {
       appendTask(tasksArr[i], true);
     }
   }
-
-  // separate function if Trash page is clicked
-  //   if (page === 'Trash') {
-  //     loadDeletedTasks();
-  //   }
 }
 
 // loads task container with tasks for the project page called
