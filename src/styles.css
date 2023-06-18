@@ -97,6 +97,7 @@ video {
   --green-add: rgb(113, 198, 113);
   --blue-create: rgb(118, 118, 255);
   --red-cancel: rgb(255, 118, 118);
+  font-size: 20px;
 }
 
 body {
@@ -105,15 +106,33 @@ body {
     'sidebar header'
     'sidebar main'
     'footer main';
-  grid-template-rows: 6vh 91vh 3vh;
+  grid-template-rows: auto 85vh 3vh;
   grid-template-columns: 1fr 4fr;
   background-image: url(images/bg.png);
   background-size: cover;
   overflow-y: hidden;
+  font-family: 'Quaver Sans', sans-serif;
 }
 
 svg {
   pointer-events: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+*::-webkit-scrollbar {
+  background: transparent;
+  width: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgb(221, 221, 221);
+  border-radius: 10px;
 }
 
 /* ****************** */
@@ -123,14 +142,24 @@ svg {
 .header {
   font-size: 1.5rem;
   display: flex;
-  align-items: center;
-  gap: 20px;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: start;
+  /* align-items: center; */
+  /* gap: 10px; */
   padding-left: 30px;
+  padding-top: 30px;
   grid-area: header;
 }
 
+/* 'IdeaList' header */
 .header div:first-child {
-  font-size: 2rem;
+  font-size: 2.3rem;
+  font-family: 'Nurinthya', sans-serif;
+}
+
+.header div:nth-child(2) {
+  font-size: 1.3rem;
 }
 
 /* ********************* */
@@ -172,6 +201,7 @@ svg {
   text-align: left;
   padding: 10px;
   background-color: transparent;
+  overflow-wrap: anywhere;
 }
 
 .sb-btns:hover {
@@ -194,15 +224,6 @@ ul {
   overflow-y: scroll;
 }
 
-*::-webkit-scrollbar {
-  background: transparent;
-}
-
-*::-webkit-scrollbar-thumb {
-  background: rgb(221, 221, 221);
-  border-radius: 10px;
-}
-
 /* container for new project buttons */
 .project-btn-cont {
   display: flex;
@@ -210,9 +231,10 @@ ul {
   position: relative;
 }
 
+/* Button for adding new project */
 #new-project-btn {
-  width: 200px;
-  height: 30px;
+  width: clamp(100px, 80%, 200px);
+  height: auto;
   margin: 0px;
   border-radius: 15px;
   border-style: none;
@@ -220,7 +242,8 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: 10px;
+  padding: 5px;
 }
 
 button:hover {
@@ -233,21 +256,27 @@ button:hover {
   display: none;
   flex-direction: column;
   gap: 10px;
+  width: clamp(100px, 80%, 200px);
 }
 
 /* Create and Cancel buttons */
 #project-form-btns > div {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* display: grid;
+  grid-template-columns: 1fr 1fr; */
   gap: 10px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 /* input for new project form */
 #project-form-btns > input {
   height: 30px;
-  width: 200px;
-  border-radius: 10px;
-  text-indent: 5px;
+  /* width: 200px; */
+  /* width: clamp(100px, 80%, 200px); */
+  width: 98%;
+  border-radius: 20px;
+  text-indent: 10px;
   border: none;
 }
 
@@ -257,6 +286,8 @@ button:hover {
   border: none;
   border-radius: 10px;
   padding: 5px;
+  /* width: 45%; */
+  width: clamp(95px, 45%, 100px);
 }
 
 /* cancel new project submission */
@@ -265,6 +296,8 @@ button:hover {
   border: none;
   border-radius: 10px;
   padding: 5px;
+  /* width: 45%; */
+  width: clamp(95px, 45%, 100px);
 }
 
 /* ****************** */
@@ -273,11 +306,9 @@ button:hover {
 
 .main {
   grid-area: main;
-  /* margin: 50px; */
-  /* background-color: var(--container-bg); */
+  margin-left: 20px;
+  margin-top: 40px;
   border-radius: 15px;
-  /* padding: 50px; */
-  position: relative;
   height: 80%;
   display: flex;
   flex-direction: column;
@@ -285,6 +316,9 @@ button:hover {
   overflow-y: scroll;
   overflow-x: hidden;
   width: clamp(300px, 90%, 1000px);
+
+  /* **** FIGURE OUT SCROLLBAR!!! **** */
+  scrollbar-width: none;
 }
 
 /* container for both page title and task form */
@@ -371,6 +405,10 @@ button:hover {
   background-color: var(--red-cancel);
 }
 
+/* ************************* */
+/* <----- TASK CONTENT -----> */
+/* ************************* */
+
 /* container for list of tasks */
 #task-list {
   gap: 15px;
@@ -388,7 +426,7 @@ button:hover {
   border-radius: 15px;
   gap: 5px;
   background-color: var(--container-bg);
-  /* box-shadow: 3px 3px 15px 1px rgba(0, 0, 0, 0.262); */
+  width: clamp(200px, 100%, 1000px);
 }
 
 /* project title on task card */
@@ -408,19 +446,38 @@ button:hover {
 
 /* middle line for each task card */
 .midline-card {
-  /* display: grid;
-  grid-template-columns: 20px minmax(150px, 75%) 80px 25px 25px;
-  grid-auto-flow: row; */
-  gap: 10px;
+  gap: 20px;
   align-items: center;
   display: flex;
   flex-wrap: wrap;
+  padding: 0px 5px;
+  justify-content: space-between;
+}
+
+/*  container for left column in task card */
+.card-left-column {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  width: clamp(250px, 75%, 1000px);
 }
 
 /* title of task card */
 .card-title {
   overflow-wrap: anywhere;
-  width: clamp(250px, 75%, 1000px);
+  font-size: 1rem;
+}
+
+/*  container for right column in task card */
+.card-right-column {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding-left: 15px;
+}
+
+.card-date {
+  font-size: 0.8rem;
 }
 
 /* btns for edit/delete/restore/perm delete  */
@@ -446,17 +503,80 @@ button:hover {
   stroke: black;
 }
 
+/* ************************* */
+/* <----- EDIT POP UP -----> */
+/* ************************* */
+
 /* popup container for editing a task */
 #edit-popup {
-  height: 200px;
-  width: 200px;
+  height: 250px;
+  width: 250px;
   background-color: white;
   position: absolute;
-  padding: 20px;
-  border: solid 1px black;
-  border-radius: 15px;
+  border-radius: 24px;
   right: 50%;
   bottom: 50%;
+  margin-right: -125px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.668);
+}
+
+#edit-popup input,
+#edit-popup select,
+#edit-popup textarea {
+  border-radius: 5px;
+  border-style: none;
+  background-color: rgb(220, 220, 220);
+  text-indent: 10px;
+}
+
+.edit-header {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.edit-middle-cont {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 15px;
+}
+
+#edit-desc {
+  height: 80px;
+  resize: none;
+}
+
+.edit-priority-line {
+  display: flex;
+  gap: 5px;
+}
+
+#edit-priority {
+  width: 100%;
+}
+
+.edit-btns-line {
+  display: flex;
+  width: 100%;
+}
+
+.edit-btns {
+  width: 50%;
+  border-style: none;
+  height: 30px;
+}
+
+#save-task-btn {
+  border-bottom-left-radius: 20px;
+  background-color: var(--blue-create);
+}
+
+#cancel-edit-btn {
+  border-bottom-right-radius: 20px;
+  background-color: var(--red-cancel);
 }
 
 /* ****************** */
@@ -470,15 +590,11 @@ footer {
 }
 
 /* problem list
+1. change structure to accomodate mobile responsiveness
 
-1. prevent page from expanding vertically
-2. only scrollable elements should be project list on sidebar and task list
-3. style Header title
-4. style task form
-5. style edit popup
 6. style task card
-  ----> improve mobile responsiveness. change midline row to column display with
-  smaller screen size. edit and delete button on their own row
+  ----> change how priority is displayed
+
 
 
 

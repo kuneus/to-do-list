@@ -4,10 +4,10 @@ import { pageInfo, tasksArr, addBorderStyle } from './toExport';
 // open/close edit task popup
 const toggleEdit = () => {
   const popupCont = document.getElementById('edit-popup');
-  if (popupCont.style.display === 'block') {
+  if (popupCont.style.display === 'flex') {
     popupCont.style.display = 'none';
   } else if (popupCont.style.display === 'none') {
-    popupCont.style.display = 'block';
+    popupCont.style.display = 'flex';
   }
 };
 
@@ -124,9 +124,7 @@ const saveEdits = () => {
 };
 
 const editEventListeners = () => {
-  const mainBody = document.getElementById('main-body');
-
-  mainBody.addEventListener('click', (e) => {
+  document.addEventListener('click', (e) => {
     // EDIT TASK BTN
     // open edit task card with current task card clicked
     if (e.target.classList.contains('edit-btn')) {

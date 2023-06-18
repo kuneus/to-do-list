@@ -169,10 +169,24 @@ const exampleTasks = () => {
 
 // create pop up for editing tasks
 const editTaskPopUp = () => {
-  const mainBody = document.getElementById('main-body');
+  const editPopUp = createAndAppend(
+    'div',
+    null,
+    'edit-popup',
+    null,
+    document.body,
+  );
 
-  const editPopUp = createAndAppend('div', null, 'edit-popup', null, mainBody);
-  createAndAppend('div', null, null, 'Edit', editPopUp);
+  // header for Edit popup
+  createAndAppend('div', 'edit-header', null, 'Edit', editPopUp);
+
+  const editMiddleCont = createAndAppend(
+    'div',
+    'edit-middle-cont',
+    null,
+    null,
+    editPopUp,
+  );
 
   // task title
   const editTitle = createAndAppend(
@@ -180,17 +194,38 @@ const editTaskPopUp = () => {
     null,
     'edit-title',
     null,
-    editPopUp,
+    editMiddleCont,
   );
   editTitle.setAttribute('maxlength', '50');
 
   // task description
-  const editDesc = createAndAppend('input', null, 'edit-desc', null, editPopUp);
+  const editDesc = createAndAppend(
+    'textarea',
+    null,
+    'edit-desc',
+    null,
+    editMiddleCont,
+  );
   editDesc.setAttribute('placeholder', 'Write a description');
 
   // task due date
-  const editDate = createAndAppend('input', null, 'edit-date', null, editPopUp);
+  const editDate = createAndAppend(
+    'input',
+    null,
+    'edit-date',
+    null,
+    editMiddleCont,
+  );
   editDate.setAttribute('type', 'date');
+
+  // container for edit priority line
+  const editPriorityLine = createAndAppend(
+    'div',
+    'edit-priority-line',
+    null,
+    null,
+    editMiddleCont,
+  );
 
   // task priority
   const labelPriority = createAndAppend(
@@ -198,7 +233,7 @@ const editTaskPopUp = () => {
     null,
     null,
     'Priority: ',
-    editPopUp,
+    editPriorityLine,
   );
   labelPriority.setAttribute('for', 'edit-priority');
   const editPri = createAndAppend(
@@ -206,7 +241,7 @@ const editTaskPopUp = () => {
     null,
     'edit-priority',
     null,
-    editPopUp,
+    editPriorityLine,
   );
 
   const noPri = createAndAppend('option', null, null, '', editPri);
@@ -220,9 +255,28 @@ const editTaskPopUp = () => {
   const urgPri = createAndAppend('option', null, null, 'Urgent', editPri);
   urgPri.value = 'urgent';
 
+  const editPopUpBtns = createAndAppend(
+    'div',
+    'edit-btns-line',
+    null,
+    null,
+    editPopUp,
+  );
   // save and cancel buttons
-  createAndAppend('button', null, 'save-task-btn', 'Save', editPopUp);
-  createAndAppend('button', null, 'cancel-edit-btn', 'Cancel', editPopUp);
+  createAndAppend(
+    'button',
+    'edit-btns',
+    'save-task-btn',
+    'Save',
+    editPopUpBtns,
+  );
+  createAndAppend(
+    'button',
+    'edit-btns',
+    'cancel-edit-btn',
+    'Cancel',
+    editPopUpBtns,
+  );
   editPopUp.style.display = 'none';
 };
 

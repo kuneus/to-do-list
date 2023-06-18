@@ -95,11 +95,29 @@ const appendDeletedTask = (task) => {
     taskCard,
   );
 
+  // container for left column of task card
+  const cardLeftCol = createAndAppend(
+    'div',
+    'card-left-column',
+    null,
+    null,
+    middleCont,
+  );
+
   // empty div in place of checkbox
-  createAndAppend('div', null, null, null, middleCont);
+  createAndAppend('div', null, null, null, cardLeftCol);
 
   // display title of task
-  createAndAppend('div', 'card-title', null, task.title, middleCont);
+  createAndAppend('div', 'card-title', null, task.title, cardLeftCol);
+
+  // container for right column of task card
+  const cardRightCOl = createAndAppend(
+    'div',
+    'card-right-column',
+    null,
+    null,
+    middleCont,
+  );
 
   // display due date of task
   const dateLine = createAndAppend(
@@ -107,7 +125,7 @@ const appendDeletedTask = (task) => {
     'card-date',
     null,
     task.taskInfo.dueDate,
-    middleCont,
+    cardRightCOl,
   );
   if (task.taskInfo.dueDate === '') {
     dateLine.textContent = 'No due date';
@@ -121,7 +139,7 @@ const appendDeletedTask = (task) => {
     'restore-btn card-btns',
     null,
     'restore',
-    middleCont,
+    cardRightCOl,
   );
   restoreBtn.innerHTML =
     '<svg width="25px" height="25px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" ><path d="M0 0h48v48H0z" fill="none"/><g id="Shopicon"><path d="M10,22v2c0,7.72,6.28,14,14,14s14-6.28,14-14s-6.28-14-14-14h-4V4l-8,8l8,8v-6h4c5.514,0,10,4.486,10,10s-4.486,10-10,10s-10-4.486-10-10v-2H10z"/></g></svg>';
@@ -132,7 +150,7 @@ const appendDeletedTask = (task) => {
     'perm-delete-btn card-btns',
     null,
     'delete',
-    middleCont,
+    cardRightCOl,
   );
   permDel.innerHTML =
     '<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="25px" height="25px" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zm2.46-7.12l1.41-1.41L12 12.59l2.12-2.12 1.41 1.41L13.41 14l2.12 2.12-1.41 1.41L12 15.41l-2.12 2.12-1.41-1.41L10.59 14l-2.13-2.12zM15.5 4l-1-1h-5l-1 1H5v2h14V4z"/></svg>';
@@ -150,9 +168,7 @@ const loadDeletedTasks = () => {
 
 // event listeners for delete-related buttons
 const deleteEventListeners = () => {
-  const mainBody = document.getElementById('main-body');
-
-  mainBody.addEventListener('click', (e) => {
+  document.addEventListener('click', (e) => {
     // if delete button clicked
     if (e.target.classList.contains('delete-btn')) {
       deleteTaskEl(e.target);
