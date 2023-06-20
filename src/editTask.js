@@ -1,5 +1,5 @@
 import { parseISO, format, parse } from 'date-fns';
-import { pageInfo, tasksArr, addBorderStyle } from './toExport';
+import { pageInfo, tasksArr, addPriority } from './toExport';
 
 // open/close edit task popup
 const toggleEdit = () => {
@@ -67,6 +67,7 @@ const updateTaskEl = (task, index) => {
   const cardTitle = document.getElementsByClassName('card-title');
   const cardDate = document.getElementsByClassName('card-date');
   const taskCard = document.getElementsByClassName('task-card');
+  const cardPriority = document.getElementsByClassName('card-priority');
 
   // update title
   Array.from(cardTitle)[index].textContent = task.title;
@@ -79,7 +80,7 @@ const updateTaskEl = (task, index) => {
   }
 
   // update border style based on priority
-  addBorderStyle(task.taskInfo.priority, Array.from(taskCard)[index]);
+  addPriority(task.taskInfo.priority, Array.from(cardPriority)[index]);
 };
 
 // when edit btn clicked, invokes all steps involved for opening the edit pop up

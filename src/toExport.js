@@ -75,22 +75,27 @@ function taskFactory(project, title) {
   };
 }
 
-const addBorderStyle = (taskPriority, taskCard) => {
+const addPriority = (taskPriority, cardPriority) => {
   switch (taskPriority) {
     case '':
-      taskCard.style.borderLeft = '';
+      // taskCard.style.borderLeft = '';
+      cardPriority.textContent = '';
       break;
     case 'low':
-      taskCard.style.borderLeft = 'solid 15px yellow';
+      // taskCard.style.borderLeft = 'solid 5px yellow';
+      cardPriority.textContent = '❗️';
       break;
     case 'medium':
-      taskCard.style.borderLeft = 'solid 15px Orange';
+      // taskCard.style.borderLeft = 'solid 5px Orange';
+      cardPriority.textContent = '❗️❗️';
       break;
     case 'high':
-      taskCard.style.borderLeft = 'solid 15px red';
+      // taskCard.style.borderLeft = 'solid 5px red';
+      cardPriority.textContent = '❗️❗️❗️';
       break;
     case 'urgent':
-      taskCard.style.borderLeft = 'solid 15px crimson';
+      // taskCard.style.borderLeft = 'solid 5px crimson';
+      cardPriority.textContent = '❗️❗️❗️❗️';
       break;
     default:
   }
@@ -103,5 +108,5 @@ export {
   taskFactory,
   tasksArr,
   pageInfo,
-  addBorderStyle,
+  addPriority,
 };
