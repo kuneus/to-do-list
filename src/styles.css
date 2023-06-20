@@ -106,10 +106,14 @@ body {
     'sidebar header'
     'sidebar main'
     'footer main';
-  grid-template-rows: auto 85vh 3vh;
-  grid-template-columns: 1fr 4fr;
-  background-image: url(images/bg.png);
-  background-size: cover;
+  grid-template-rows: auto 83vh 4vh;
+  /* grid-template-columns: 1fr 4fr; */
+  grid-template-columns: minmax(175px, 20vw) 80vw;
+  /* background-image: url(images/bg.png); */
+  background: linear-gradient(45deg, #acf0ff 0%, #6399ff 100%);
+  background-attachment: fixed;
+  /* background-size: cover; */
+  background-repeat: no-repeat;
   overflow-y: hidden;
   font-family: 'Quaver Sans', sans-serif;
 }
@@ -133,6 +137,14 @@ textarea {
 *::-webkit-scrollbar-thumb {
   background: rgb(221, 221, 221);
   border-radius: 10px;
+}
+
+button:hover {
+  filter: brightness(120%);
+}
+
+ul {
+  list-style-type: none;
 }
 
 /* ****************** */
@@ -175,6 +187,12 @@ textarea {
   padding-top: 50px;
 }
 
+#collapsible {
+  align-self: flex-end;
+  padding-right: 20px;
+  display: none;
+}
+
 /* Indent sidebar column */
 .sb-columns {
   padding-left: 20px;
@@ -192,6 +210,7 @@ textarea {
 .sb-home-container {
   display: flex;
   flex-direction: column;
+  padding-right: 10px;
 }
 
 /* sidebar clicking elements */
@@ -202,20 +221,17 @@ textarea {
   padding: 10px;
   background-color: transparent;
   overflow-wrap: anywhere;
+  border-radius: 10px;
 }
 
 .sb-btns:hover {
   cursor: pointer;
-  background-color: #0000004b;
+  background-color: #ffffff88;
 }
 
 .sb-btns:focus {
-  background-color: #0000004b;
+  background-color: #ffffff88;
   outline: none;
-}
-
-ul {
-  list-style-type: none;
 }
 
 /* container for project list */
@@ -227,46 +243,37 @@ ul {
 /* container for new project buttons */
 .project-btn-cont {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   position: relative;
 }
 
 /* Button for adding new project */
 #new-project-btn {
-  width: clamp(100px, 80%, 200px);
+  width: clamp(100px, 95%, 300px);
   height: auto;
   margin: 0px;
-  border-radius: 15px;
+  border-radius: 10px;
   border-style: none;
-  background-color: var(--green-add);
+  /* background-color: var(--green-add); */
+  background-color: rgba(105, 105, 105, 0.208);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 10px;
-  padding: 5px;
+  padding: 5px 0px 5px 15px;
 }
 
-button:hover {
-  filter: brightness(120%);
+#new-project-btn:hover {
+  background-color: var(--green-add);
 }
 
 /* hidden form for new project */
 #project-form-btns {
-  position: absolute;
+  position: relative;
   display: none;
   flex-direction: column;
   gap: 10px;
-  width: clamp(100px, 80%, 200px);
-}
-
-/* Create and Cancel buttons */
-#project-form-btns > div {
-  /* display: grid;
-  grid-template-columns: 1fr 1fr; */
-  gap: 10px;
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
+  width: clamp(100px, 95%, 300px);
 }
 
 /* input for new project form */
@@ -275,9 +282,20 @@ button:hover {
   /* width: 200px; */
   /* width: clamp(100px, 80%, 200px); */
   width: 98%;
-  border-radius: 20px;
+  border-radius: 10px;
   text-indent: 10px;
   border: none;
+}
+
+/* Create and Cancel buttons */
+#project-form-btns > div {
+  gap: 10px;
+  width: 100%;
+  /* display: flex;
+  flex-wrap: wrap; */
+  display: grid;
+  /* grid-template-columns: repeat(auto-fit, clamp(55px, 46%, 100px)); */
+  grid-template-columns: repeat(auto-fit, minmax(55px, 1fr));
 }
 
 /* submit new project */
@@ -287,7 +305,7 @@ button:hover {
   border-radius: 10px;
   padding: 5px;
   /* width: 45%; */
-  width: clamp(95px, 45%, 100px);
+  /* width: clamp(55px, 45%, 100px); */
 }
 
 /* cancel new project submission */
@@ -297,7 +315,7 @@ button:hover {
   border-radius: 10px;
   padding: 5px;
   /* width: 45%; */
-  width: clamp(95px, 45%, 100px);
+  /* width: clamp(55px, 45%, 100px); */
 }
 
 /* ****************** */
@@ -316,9 +334,6 @@ button:hover {
   overflow-y: scroll;
   overflow-x: hidden;
   width: clamp(300px, 90%, 1000px);
-
-  /* **** FIGURE OUT SCROLLBAR!!! **** */
-  scrollbar-width: none;
 }
 
 /* container for both page title and task form */
@@ -589,8 +604,95 @@ footer {
   background-color: var(--container-bg);
 }
 
+/* MOBILE RESPONSIVENESS */
+@media all and (max-width: 600px) {
+  body {
+    display: grid;
+    min-width: 335px;
+    grid-template-areas:
+      'header'
+      'sidebar'
+      'main'
+      'footer';
+    grid-template-rows: auto auto 80% 50px;
+    grid-template-columns: 100%;
+    overflow-y: scroll;
+  }
+
+  .header {
+    font-size: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: start;
+    padding-left: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-right: 30px;
+    grid-area: header;
+  }
+
+  .sidebar {
+    display: grid;
+    grid-template-areas:
+      'collapsible collapsible'
+      'home projects'
+      'home projects'
+      'home button';
+    gap: 0px;
+    padding-top: 5px;
+    padding-bottom: 25px;
+    background-color: var(--container-bg);
+    border-radius: 20px;
+    margin: 15px;
+    max-height: 300px;
+  }
+
+  #collapsible {
+    margin-top: 15px;
+    grid-area: collapsible;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .sidebar-home {
+    grid-area: home;
+  }
+
+  .sidebar-projects {
+    grid-area: projects;
+  }
+
+  .project-btn-cont {
+    grid-area: button;
+  }
+
+  .sb-columns {
+    display: none;
+  }
+
+  /* container for project list */
+  .sb-projects-container {
+    max-height: 200px;
+    overflow-y: scroll;
+  }
+
+  /* Create and Cancel buttons */
+  #project-form-btns > div {
+    flex-wrap: nowrap;
+  }
+
+  .main {
+    width: 95%;
+    margin-left: 4%;
+    justify-content: center;
+  }
+}
+
 /* problem list
 1. change structure to accomodate mobile responsiveness
+
+2. change background
 
 6. style task card
   ----> change how priority is displayed

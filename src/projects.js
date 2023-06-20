@@ -7,7 +7,7 @@ function changeBtnDisplay() {
   const newProjectBtn = document.getElementById('new-project-btn');
   if (projectFormCont.style.display === 'flex') {
     projectFormCont.style.display = 'none';
-    newProjectBtn.style.display = 'block';
+    newProjectBtn.style.display = 'flex';
   } else {
     projectFormCont.style.display = 'flex';
     newProjectBtn.style.display = 'none';
