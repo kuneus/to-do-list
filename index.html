@@ -24,6 +24,21 @@
 
     <!-- SIDEBAR -->
     <div id="sidebar-cont" class="sidebar">
+      <div id="collapsible">
+        <svg
+          width="25px"
+          height="25px"
+          viewBox="0 0 20 20"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+        >
+          <path
+            fill="#000000"
+            fill-rule="evenodd"
+            d="M19 4a1 1 0 01-1 1H2a1 1 0 010-2h16a1 1 0 011 1zm0 6a1 1 0 01-1 1H2a1 1 0 110-2h16a1 1 0 011 1zm-1 7a1 1 0 100-2H2a1 1 0 100 2h16z"
+          />
+        </svg>
+      </div>
       <div class="sidebar-home sb-columns">
         <h2>Home</h2>
         <div class="sb-home-container">
@@ -40,57 +55,61 @@
       </div>
       <div class="sidebar-projects sb-columns">
         <h2>Projects</h2>
-        <div class="sb-projects-container">
-          <ul id="projects-list"></ul>
-        </div>
-      </div>
-      <div class="project-btn-cont">
-        <button id="new-project-btn" class="project-btns">
-          <svg
-            width="15px"
-            height="15px"
-            viewBox="0 -0.5 9 9"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-          >
-            <title>New</title>
-            <desc>Created with Sketch.</desc>
-            <defs></defs>
-            <g
-              id="Page-1"
-              stroke="none"
-              stroke-width="1"
-              fill="none"
-              fill-rule="evenodd"
+        <div class="project-btn-cont">
+          <button id="new-project-btn" class="project-btns">
+            <svg
+              width="15px"
+              height="15px"
+              viewBox="0 -0.5 9 9"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
             >
+              <title>New</title>
+              <desc>Created with Sketch.</desc>
+              <defs></defs>
               <g
-                id="Dribbble-Light-Preview"
-                transform="translate(-345.000000, -206.000000)"
-                fill="#000000"
+                id="Page-1"
+                stroke="none"
+                stroke-width="1"
+                fill="none"
+                fill-rule="evenodd"
               >
-                <g id="icons" transform="translate(56.000000, 160.000000)">
-                  <polygon
-                    id="plus_mini-[#1523]"
-                    points="298 49 298 51 294.625 51 294.625 54 292.375 54 292.375 51 289 51 289 49 292.375 49 292.375 46 294.625 46 294.625 49"
-                  ></polygon>
+                <g
+                  id="Dribbble-Light-Preview"
+                  transform="translate(-345.000000, -206.000000)"
+                  fill="#000000"
+                >
+                  <g id="icons" transform="translate(56.000000, 160.000000)">
+                    <polygon
+                      id="plus_mini-[#1523]"
+                      points="298 49 298 51 294.625 51 294.625 54 292.375 54 292.375 51 289 51 289 49 292.375 49 292.375 46 294.625 46 294.625 49"
+                    ></polygon>
+                  </g>
                 </g>
               </g>
-            </g>
-          </svg>
-          New Project
-        </button>
-        <div id="project-form-btns">
-          <input
-            type="text"
-            id="project-textfield"
-            placeholder="Project name"
-            maxlength="30"
-          />
-          <div>
-            <button id="new-project-submit" class="project-btns">Create</button>
-            <button id="new-project-cancel" class="project-btns">Cancel</button>
+            </svg>
+            New Project
+          </button>
+          <div id="project-form-btns">
+            <input
+              type="text"
+              id="project-textfield"
+              placeholder="Project name"
+              maxlength="30"
+            />
+            <div>
+              <button id="new-project-submit" class="project-btns">
+                Create
+              </button>
+              <button id="new-project-cancel" class="project-btns">
+                Cancel
+              </button>
+            </div>
           </div>
+        </div>
+        <div class="sb-projects-container">
+          <ul id="projects-list"></ul>
         </div>
       </div>
     </div>
@@ -102,5 +121,5 @@
     <footer>
       <div>Made by Kuni <a href="https://github.com/kuneus"> @kuneus</a></div>
     </footer>
-  <script defer src="main.js?89992848f66a6fed0223"></script></body>
+  <script defer src="main.js?aa6104a255cc69ab6712"></script></body>
 </html>
