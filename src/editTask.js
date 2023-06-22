@@ -1,5 +1,5 @@
 import { parseISO, format, parse } from 'date-fns';
-import { pageInfo, tasksArr, addPriority } from './toExport';
+import { pageInfo, tasksArr, addPriority, updateStorage } from './toExport';
 
 // open/close edit task popup
 const toggleEdit = () => {
@@ -66,7 +66,6 @@ const updateTaskObj = (task) => {
 const updateTaskEl = (task, index) => {
   const cardTitle = document.getElementsByClassName('card-title');
   const cardDate = document.getElementsByClassName('card-date');
-  const taskCard = document.getElementsByClassName('task-card');
   const cardPriority = document.getElementsByClassName('card-priority');
 
   // update title
@@ -79,7 +78,7 @@ const updateTaskEl = (task, index) => {
     Array.from(cardDate)[index].textContent = 'No due date';
   }
 
-  // update border style based on priority
+  // update card based on priority
   addPriority(task.taskInfo.priority, Array.from(cardPriority)[index]);
 };
 
@@ -120,6 +119,9 @@ const saveEdits = () => {
       // update the task object and its DOM elements
       updateTaskObj(tasksArr[i]);
       updateTaskEl(tasksArr[i], pageInfo.currentElement);
+
+      // update storage to reflect changes
+      updateStorage('tasks');
     }
   }
 };

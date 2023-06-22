@@ -1,6 +1,11 @@
-import { createAndAppend, tasksArr, addPriority } from './toExport';
+import {
+  createAndAppend,
+  tasksArr,
+  trashArr,
+  addPriority,
+  updateStorage,
+} from './toExport';
 
-const trashArr = [];
 const cardValue = { value: '' };
 
 // delete the task card element
@@ -28,8 +33,14 @@ const deleteTaskObj = () => {
   for (let i = 0; i < tasksArr.length; i += 1) {
     if (tasksArr[i].title === cardValue.value) {
       const index = tasksArr.indexOf(tasksArr[i]);
+      // push task to trash
       trashArr.push(tasksArr[i]);
+      // remove task from task array
       tasksArr.splice(index, 1);
+
+      // update storage for both trash and tasks arrays
+      updateStorage('trash');
+      updateStorage('tasks');
     }
   }
 };
@@ -40,12 +51,17 @@ const removeTaskObj = (restore) => {
     // find the task obj by matching it for previously stored card value
     if (trashArr[i].title === cardValue.value) {
       const index = trashArr.indexOf(trashArr[i]);
-      // restore to task array if called to restore
+
+      // restore to task array and update task storage
       if (restore === 'restore') {
         tasksArr.push(trashArr[i]);
+        updateStorage('tasks');
       }
+
       // remove from trash array
       trashArr.splice(index, 1);
+      // update trash storage
+      updateStorage('trash');
     }
   }
 };

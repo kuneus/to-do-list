@@ -93,7 +93,7 @@ video {
 }
 
 :root {
-  --container-bg: rgba(231, 255, 250, 0.791);
+  --container-bg: rgba(255, 255, 255, 0.517);
   --green-add: rgb(113, 198, 113);
   --blue-create: rgb(118, 118, 255);
   --red-cancel: rgb(255, 118, 118);
@@ -141,6 +141,7 @@ textarea {
 
 button:hover {
   filter: brightness(120%);
+  cursor: pointer;
 }
 
 ul {
@@ -225,7 +226,6 @@ ul {
 }
 
 .sb-btns:hover {
-  cursor: pointer;
   background-color: #ffffff88;
 }
 
@@ -254,8 +254,7 @@ ul {
   margin: 0px;
   border-radius: 10px;
   border-style: none;
-  /* background-color: var(--green-add); */
-  background-color: rgba(105, 105, 105, 0.208);
+  background-color: rgba(39, 39, 39, 0.088);
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -265,6 +264,12 @@ ul {
 
 #new-project-btn:hover {
   background-color: var(--green-add);
+}
+
+#new-project-btn:focus,
+#add-task-btn:focus {
+  background-color: var(--green-add);
+  outline: none;
 }
 
 /* hidden form for new project */
@@ -357,7 +362,7 @@ ul {
   height: 50px;
   width: 100%;
   border-radius: 15px;
-  background-color: rgba(227, 227, 227, 0.435);
+  background-color: rgba(255, 255, 255, 0.134);
   border-style: none;
   display: flex;
   gap: 20px;
@@ -368,7 +373,6 @@ ul {
 
 #add-task-btn:hover {
   background-color: var(--green-add);
-  cursor: pointer;
 }
 
 /* container for form elements for submitting new task */
@@ -488,6 +492,8 @@ ul {
   display: flex;
   gap: 10px;
   align-items: center;
+  justify-content: flex-end;
+  width: 225px;
   /* padding-left: 15px; */
 }
 
@@ -509,7 +515,6 @@ ul {
 
 .card-btns:hover {
   transform: scale(1.1);
-  cursor: pointer;
 }
 
 /* SVG for delete btn */
@@ -653,6 +658,17 @@ footer {
     grid-area: collapsible;
     display: flex;
     justify-content: flex-end;
+    padding-left: 20px;
+  }
+
+  #collapsible div {
+    width: 50%;
+    font-size: 1.4rem;
+    font-weight: 800;
+  }
+
+  #collapsible:hover {
+    cursor: pointer;
   }
 
   .sidebar-home {
@@ -690,12 +706,6 @@ footer {
 }
 
 /* problem list
-
-6. style task card
-  ----> change how priority is displayed
-
-
-
 
 
 */

@@ -6,6 +6,7 @@ import {
   projectsArr,
   tasksArr,
   addPriority,
+  updateStorage,
 } from './toExport';
 
 // append new task card
@@ -154,6 +155,8 @@ const submitTask = () => {
         appendTask(newTask, true);
       }
     }
+    // add to local storage
+    updateStorage('tasks');
   } else {
     // eslint-disable-next-line no-alert
     alert('please submit a title for your task!');
@@ -178,7 +181,6 @@ const updateProjectSelection = () => {
   // clear project select options
   projSelect.innerHTML = '';
 
-  // update select options with current projects
   for (let i = 0; i < projectsArr.length; i += 1) {
     const option = createAndAppend(
       'option',

@@ -1,4 +1,4 @@
-import { pageInfo, tasksArr } from './toExport';
+import { pageInfo, tasksArr, updateStorage } from './toExport';
 
 const updateCompletionStatus = (element) => {
   for (let i = 0; i < tasksArr.length; i += 1) {
@@ -16,6 +16,9 @@ const updateCompletionStatus = (element) => {
 
       // set currently selected task
       pageInfo.currentTask = tasksArr[i];
+
+      // update task storage
+      updateStorage('tasks');
     }
   }
 };

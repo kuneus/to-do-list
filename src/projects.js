@@ -1,5 +1,10 @@
 import { loadProjTasks } from './taskLoader';
-import { ProjectFactory, projectsArr } from './toExport';
+import {
+  ProjectFactory,
+  projectsArr,
+  updateStorage,
+  createAndAppend,
+} from './toExport';
 
 // Change displays for new project buttons from 'none' to 'block'
 function changeBtnDisplay() {
@@ -14,11 +19,33 @@ function changeBtnDisplay() {
   }
 }
 
-// append example project to project list
+// Add project name submission to the DOM project list
+const appendProj = (projTitle) => {
+  const projCont = document.getElementById('projects-list');
+  const projectTextField = document.getElementById('project-textfield');
+
+  // create li element and append to project list
+  const liEle = createAndAppend('li', null, null, null, projCont);
+
+  // create button inside li element
+  createAndAppend('button', 'sb-btns projects', null, projTitle, liEle);
+
+  createAndAppend('button', 'sb-btns delete-proj', null, 'delete', liEle);
+
+  // clear text field after submission
+  projectTextField.value = '';
+};
+
+// append example project to project list if no projects in storage
 const exampleProject = () => {
-  const exampleProj = ProjectFactory('The Odin Project');
-  projectsArr.push(exampleProj);
-  exampleProj.append(exampleProj.title);
+  if (!localStorage.getItem('projectsArr')) {
+    console.log('no projects in local storage, add exampleProj');
+    const exampleProj = ProjectFactory('The Odin Project');
+    projectsArr.push(exampleProj);
+    appendProj(exampleProj.title);
+
+    updateStorage('projects');
+  }
 };
 
 // creates new project and appends it to the project list in sidebar
@@ -31,7 +58,10 @@ const createNewProject = () => {
   } else {
     const newProj = ProjectFactory(projName);
     projectsArr.push(newProj);
-    newProj.append(newProj.title);
+    appendProj(newProj.title);
+
+    // add project to storage
+    updateStorage('projects');
   }
 };
 
@@ -65,4 +95,4 @@ const projectPages = (project) => {
   selectCont.style.display = 'none';
 };
 
-export { projectPages, projectEventListeners, exampleProject };
+export { projectPages, projectEventListeners, exampleProject, appendProj };

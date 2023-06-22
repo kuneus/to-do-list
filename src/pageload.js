@@ -1,6 +1,17 @@
 import { format } from 'date-fns';
-import { createAndAppend, taskFactory, tasksArr } from './toExport';
+import {
+  createAndAppend,
+  taskFactory,
+  tasksArr,
+  trashArr,
+  projStorage,
+  taskStorage,
+  projectsArr,
+  trashStorage,
+} from './toExport';
 import { appendTask } from './createTask';
+import { appendProj } from './projects';
+import { loadHomeTasks } from './taskLoader';
 
 // create header page consisting of page title and form for adding tasks
 const createHeader = () => {
@@ -165,6 +176,8 @@ const exampleTasks = () => {
 
   const task4 = taskFactory('The Odin Project', 'Add checkbox to tasks');
   tasksArr.push(task4);
+
+  localStorage.setItem('tasksArr', JSON.stringify(tasksArr));
 };
 
 // create pop up for editing tasks
@@ -280,8 +293,33 @@ const editTaskPopUp = () => {
   editPopUp.style.display = 'none';
 };
 
+const loadStorage = () => {
+  // load task array with current storage if available
+  if (localStorage.getItem('tasksArr')) {
+    for (let i = 0; i < taskStorage.length; i += 1) {
+      tasksArr.push(taskStorage[i]);
+    }
+  }
+
+  // load projects array with current storage if available
+  if (localStorage.getItem('projectsArr')) {
+    for (let i = 0; i < projStorage.length; i += 1) {
+      projectsArr.push(projStorage[i]);
+    }
+  }
+
+  // load trash array with deleted tasks if available
+  if (localStorage.getItem('trashArr')) {
+    for (let i = 0; i < trashStorage.length; i += 1) {
+      trashArr.push(trashStorage[i]);
+    }
+  }
+};
+
 // load main page content
 const pageload = () => {
+  loadStorage();
+
   createHeader();
   const mainBody = document.getElementById('main-body');
 
@@ -291,12 +329,22 @@ const pageload = () => {
   // container for list of tasks
   createAndAppend('div', null, 'task-list', null, mainBody);
 
-  // preload page with some example tasks
-  exampleTasks();
+  // load page with current or example tasks
+  if (!localStorage.getItem('tasksArr')) {
+    // if no local storage, then preload page with example tasks
+    exampleTasks();
+    // Load task list with example tasks
+    for (let i = 0; i < tasksArr.length; i += 1) {
+      appendTask(tasksArr[i], true);
+    }
+  } else {
+    // Load task list with all current tasks
+    loadHomeTasks('All Tasks');
+  }
 
-  // Load task list with current tasks
-  for (let i = 0; i < tasksArr.length; i += 1) {
-    appendTask(tasksArr[i], true);
+  // append current projects to sidebar
+  for (let i = 0; i < projectsArr.length; i += 1) {
+    appendProj(projectsArr[i].title);
   }
 
   // create pop up for editing task

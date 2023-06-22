@@ -10,9 +10,7 @@ import { collapseListener, mediaQueryEventListener } from './collapseMenu';
 
 // **** CURRENT TO-DO:
 
-// 1 ----> may need to add priority default to 'low' or add a 'none' option
-
-// 2 -----> add local storage!!
+// 1 projects -----> create delete project button and functionality!
 
 pageload();
 exampleProject();

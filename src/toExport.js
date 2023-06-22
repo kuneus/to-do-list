@@ -19,6 +19,7 @@ function createAndAppend(elementType, eleClass, eleID, eleText, eleParent) {
 // array for all projects and for all tasks
 const projectsArr = [];
 const tasksArr = [];
+const trashArr = [];
 
 // use to find current task or element selected
 const pageInfo = {
@@ -101,12 +102,35 @@ const addPriority = (taskPriority, cardPriority) => {
   }
 };
 
+// storage variables
+const unparsedProjStorage = localStorage.getItem('projectsArr');
+const projStorage = JSON.parse(unparsedProjStorage);
+const unparsedTasksStorage = localStorage.getItem('tasksArr');
+const taskStorage = JSON.parse(unparsedTasksStorage);
+const unparsedTrashStorage = localStorage.getItem('trashArr');
+const trashStorage = JSON.parse(unparsedTrashStorage);
+
+const updateStorage = (item) => {
+  if (item === 'projects') {
+    localStorage.setItem('projectsArr', JSON.stringify(projectsArr));
+  } else if (item === 'tasks') {
+    localStorage.setItem('tasksArr', JSON.stringify(tasksArr));
+  } else if (item === 'trash') {
+    localStorage.setItem('trashArr', JSON.stringify(trashArr));
+  }
+};
+
 export {
   createAndAppend,
   ProjectFactory,
   projectsArr,
   taskFactory,
   tasksArr,
+  trashArr,
   pageInfo,
   addPriority,
+  projStorage,
+  taskStorage,
+  updateStorage,
+  trashStorage,
 };
