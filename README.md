@@ -32,3 +32,8 @@ This is the To-Do list assignment as part of The Odin Project curriculum. The go
 - Sort tasks by due date or priority
 - Display number of tasks in each category or project
 - User login and be able to access your IdeaList from any computer
+
+🪲 BUGS 🪲
+
+- There are some glaring formatting issues on mobile devices, and smaller formatting issues in general.
+- Not necessarily bugs, but some aesthetic dissatisfaction I have with the look of the task cards. Have some ideas for how I could design the task card? Shoot me a message!
