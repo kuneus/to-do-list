@@ -6,11 +6,14 @@ import { completeEventListener } from './completeTask';
 import { deleteEventListeners } from './deleteTask';
 import { createEventListener } from './createTask';
 import { editEventListeners } from './editTask';
+import { deleteProjListener } from './deleteProject';
 import { collapseListener, mediaQueryEventListener } from './collapseMenu';
 
 // **** CURRENT TO-DO:
 
 // 1 projects -----> create delete project button and functionality!
+
+// 2 prevent duplicate submissions for projects and tasks
 
 pageload();
 exampleProject();
@@ -20,6 +23,7 @@ completeEventListener();
 deleteEventListeners();
 createEventListener();
 editEventListeners();
+deleteProjListener();
 collapseListener();
 mediaQueryEventListener();
 

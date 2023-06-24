@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import { loadProjTasks } from './taskLoader';
 import {
   ProjectFactory,
@@ -30,8 +31,6 @@ const appendProj = (projTitle) => {
   // create button inside li element
   createAndAppend('button', 'sb-btns projects', null, projTitle, liEle);
 
-  createAndAppend('button', 'sb-btns delete-proj', null, 'delete', liEle);
-
   // clear text field after submission
   projectTextField.value = '';
 };
@@ -52,10 +51,22 @@ const exampleProject = () => {
 const createNewProject = () => {
   const projectTextField = document.getElementById('project-textfield');
   const projName = projectTextField.value;
+
+  // create array of titles of projects to find duplicates in next block
+  const projTitleArray = [];
+  for (let i = 0; i < projectsArr.length; i += 1) {
+    projTitleArray.push(projectsArr[i].title);
+  }
+
+  console.log('projTitleArray = ' + projTitleArray);
   if (projName === '') {
-    // eslint-disable-next-line no-alert
+    // empty submission
     alert('Please submit a project name');
+  } else if (projTitleArray.includes(projName)) {
+    // duplicate submission
+    alert('You already have a project with that title!');
   } else {
+    // create new project object and push and append it
     const newProj = ProjectFactory(projName);
     projectsArr.push(newProj);
     appendProj(newProj.title);
@@ -84,6 +95,7 @@ const projectEventListeners = () => {
 const projectPages = (project) => {
   const pageTitle = document.getElementById('page-title');
   const selectCont = document.getElementById('form-select-cont');
+  const deleteProjBtn = document.getElementById('delete-project-btn');
 
   // set title of page to Project's title
   pageTitle.textContent = project.title;
@@ -93,6 +105,8 @@ const projectPages = (project) => {
 
   // hide project selection options within task form since not needed for this module
   selectCont.style.display = 'none';
+
+  deleteProjBtn.style.display = 'block';
 };
 
 export { projectPages, projectEventListeners, exampleProject, appendProj };

@@ -240,6 +240,15 @@ ul {
   overflow-y: scroll;
 }
 
+/* style each line for project list */
+.sb-projects-container li {
+  display: flex;
+}
+
+.delete-proj {
+  width: 15px;
+}
+
 /* container for new project buttons */
 .project-btn-cont {
   display: flex;
@@ -250,7 +259,8 @@ ul {
 /* Button for adding new project */
 #new-project-btn {
   width: clamp(100px, 95%, 300px);
-  height: auto;
+  /* height: auto; */
+
   margin: 0px;
   border-radius: 10px;
   border-style: none;
@@ -259,7 +269,7 @@ ul {
   align-items: center;
   justify-content: flex-start;
   gap: 10px;
-  padding: 5px 0px 5px 15px;
+  padding: 10px;
 }
 
 #new-project-btn:hover {
@@ -284,8 +294,6 @@ ul {
 /* input for new project form */
 #project-form-btns > input {
   height: 30px;
-  /* width: 200px; */
-  /* width: clamp(100px, 80%, 200px); */
   width: 98%;
   border-radius: 10px;
   text-indent: 10px;
@@ -296,10 +304,7 @@ ul {
 #project-form-btns > div {
   gap: 10px;
   width: 100%;
-  /* display: flex;
-  flex-wrap: wrap; */
   display: grid;
-  /* grid-template-columns: repeat(auto-fit, clamp(55px, 46%, 100px)); */
   grid-template-columns: repeat(auto-fit, minmax(55px, 1fr));
 }
 
@@ -309,8 +314,6 @@ ul {
   border: none;
   border-radius: 10px;
   padding: 5px;
-  /* width: 45%; */
-  /* width: clamp(55px, 45%, 100px); */
 }
 
 /* cancel new project submission */
@@ -319,8 +322,6 @@ ul {
   border: none;
   border-radius: 10px;
   padding: 5px;
-  /* width: 45%; */
-  /* width: clamp(55px, 45%, 100px); */
 }
 
 /* ****************** */
@@ -346,9 +347,24 @@ ul {
   font-size: 2rem;
 }
 
-/* Title of page */
-#page-title {
-  margin-bottom: 20px;
+/* container for page title and delete project button */
+.title-line {
+  display: flex;
+  justify-content: space-between;
+  height: 70px;
+  padding-left: 5px;
+  display: flex;
+  align-items: center;
+}
+
+#delete-project-btn {
+  background-color: transparent;
+  border-style: none;
+  padding: 0px;
+}
+
+#delete-project-btn:hover {
+  transform: scale(1.1);
 }
 
 /* container for add task btn and task form */
@@ -395,8 +411,6 @@ ul {
 .form-title-cont,
 .form-date-cont,
 #form-select-cont {
-  /* display: flex;
-  flex-direction: row; */
   display: grid;
   grid-template-columns: auto 85%;
   margin: 10px;
@@ -406,6 +420,7 @@ ul {
   width: 100%;
 }
 
+/* buttons for submitting new task or canceling add task */
 #create-task-btn,
 #cancel-task-btn {
   width: 50%;
@@ -494,7 +509,6 @@ ul {
   align-items: center;
   justify-content: flex-end;
   width: 225px;
-  /* padding-left: 15px; */
 }
 
 .card-date {

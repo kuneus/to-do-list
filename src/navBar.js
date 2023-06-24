@@ -56,11 +56,13 @@ const openHomePage = (element) => {
   const taskList = document.getElementById('task-list');
   const pageTitle = document.getElementById('page-title');
   const selectCont = document.getElementById('form-select-cont');
+  const deleteProjBtn = document.getElementById('delete-project-btn');
 
-  // clear task list, set page title, and display project select options
+  // clear task list, set page title, display project select options and hide delete project btn
   taskList.innerHTML = '';
   pageTitle.textContent = element.textContent;
   selectCont.style.display = '';
+  deleteProjBtn.style.display = 'none';
 
   // load tasks of respective page
   loadHomeTasks(element.textContent);
@@ -89,4 +91,4 @@ const navEventListeners = () => {
   //
 };
 
-export { navEventListeners };
+export { navEventListeners, openHomePage };
