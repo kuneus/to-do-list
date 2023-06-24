@@ -481,11 +481,15 @@ ul {
 /* middle line for each task card */
 .midline-card {
   gap: 10px;
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
   padding: 0px 5px;
-  justify-content: space-between;
+
+  /* display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between; */
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
 }
 
 /*  container for left column in task card */
@@ -493,7 +497,8 @@ ul {
   display: flex;
   align-items: flex-start;
   gap: 5px;
-  width: clamp(250px, 60%, 1000px);
+  grid-column: span 2;
+  /* width: clamp(250px, 60%, 1000px); */
 }
 
 .card-priority {
@@ -513,8 +518,9 @@ ul {
   display: flex;
   gap: 10px;
   align-items: center;
-  justify-content: flex-end;
-  width: 225px;
+  justify-content: flex-start;
+  grid-column: span 1;
+  /* width: 225px; */
 }
 
 .card-date {
@@ -630,7 +636,9 @@ footer {
   background-color: var(--container-bg);
 }
 
-/* MOBILE RESPONSIVENESS */
+/* ********************************* */
+/* <---- MOBILE RESPONSIVENESS ----> */
+/* ********************************* */
 @media all and (max-width: 600px) {
   body {
     display: grid;
@@ -724,9 +732,8 @@ footer {
     margin-left: 4%;
     justify-content: center;
   }
+
+  .card-right-column {
+    justify-content: flex-start;
+  }
 }
-
-/* problem list
-
-
-*/
