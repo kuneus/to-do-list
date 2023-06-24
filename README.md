@@ -1,6 +1,6 @@
 # IdeaList: A to-do list which represents tasks as they should or will be rather than as they are
 
-🔗 Live link: https://kuneus.github.io/idealist/
+🔗 Live link: https://kuneus.github.io/to-do-list/
 
 This is the To-Do list assignment as part of The Odin Project curriculum. The goal of this project was to create a basic to-do list app using SOLID principles. And yes, the title is a pun based on the definition of 'idealist'.
 
