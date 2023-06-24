@@ -496,6 +496,12 @@ ul {
   width: clamp(250px, 60%, 1000px);
 }
 
+.card-priority {
+  width: 83px;
+  display: flex;
+  justify-content: flex-end;
+}
+
 /* title of task card */
 .card-title {
   overflow-wrap: anywhere;
@@ -513,6 +519,7 @@ ul {
 
 .card-date {
   font-size: 0.8rem;
+  width: 70px;
 }
 
 /* btns for edit/delete/restore/perm delete  */
