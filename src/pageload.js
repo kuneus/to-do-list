@@ -8,6 +8,7 @@ import {
   taskStorage,
   projectsArr,
   trashStorage,
+  updateStorage,
 } from './toExport';
 import { appendTask } from './createTask';
 import { appendProj } from './projects';
@@ -179,26 +180,23 @@ const exampleTasks = () => {
   const date = new Date();
   const currentDate = format(date, 'MM/dd/yyy');
 
-  const task1 = taskFactory(
-    'The Odin Project',
-    'Create modules for Home sidebar buttons',
-  );
+  const task1 = taskFactory('General stuff', 'Do laundry');
   task1.setDueDate(currentDate);
   task1.taskInfo.unformattedDate = date;
   tasksArr.push(task1);
 
-  const task2 = taskFactory('The Odin Project', 'Create editTask function');
+  const task2 = taskFactory('General stuff', 'Go to gym');
   tasksArr.push(task2);
 
-  const task3 = taskFactory('The Odin Project', 'Create deleteTask function');
+  const task3 = taskFactory('General stuff', 'Meal prep for the week');
   task3.setDueDate(currentDate);
   task3.taskInfo.unformattedDate = date;
   tasksArr.push(task3);
 
-  const task4 = taskFactory('The Odin Project', 'Add checkbox to tasks');
+  const task4 = taskFactory('General stuff', 'Apply for jobs');
   tasksArr.push(task4);
 
-  localStorage.setItem('tasksArr', JSON.stringify(tasksArr));
+  updateStorage('tasks');
 };
 
 // create pop up for editing tasks

@@ -39,7 +39,7 @@ const appendProj = (projTitle) => {
 const exampleProject = () => {
   if (!localStorage.getItem('projectsArr')) {
     console.log('no projects in local storage, add exampleProj');
-    const exampleProj = ProjectFactory('The Odin Project');
+    const exampleProj = ProjectFactory('General stuff');
     projectsArr.push(exampleProj);
     appendProj(exampleProj.title);
 
