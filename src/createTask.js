@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 import { format, parseISO } from 'date-fns';
 import {
   createAndAppend,
@@ -124,7 +125,18 @@ const submitTask = () => {
   const selectInput = document.getElementById('project-select');
   const formattedToday = format(new Date(), 'yyyy-MM-dd');
 
-  if (textInput.value !== '') {
+  // array of titles of task to check for duplicates in next block
+  const taskTitleArr = [];
+  for (let i = 0; i < tasksArr.length; i += 1) {
+    taskTitleArr.push(tasksArr[i].title);
+  }
+
+  if (taskTitleArr.includes(textInput.value)) {
+    // find duplicate
+    alert(
+      'You already have a task with that title! Please submit a unique title',
+    );
+  } else if (textInput.value !== '') {
     const newTask = taskFactory(selectInput.value, textInput.value);
 
     // format date input
@@ -158,7 +170,6 @@ const submitTask = () => {
     // add to local storage
     updateStorage('tasks');
   } else {
-    // eslint-disable-next-line no-alert
     alert('please submit a title for your task!');
   }
 };

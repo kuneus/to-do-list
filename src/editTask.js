@@ -112,16 +112,39 @@ const openEditScreen = (element) => {
   }
 };
 
+// identify if edit submission contains duplicate with another task name
+const findDuplicate = () => {
+  const taskTitleArr = [];
+  for (let i = 0; i < tasksArr.length; i += 1) {
+    taskTitleArr.push(tasksArr[i].title);
+  }
+
+  let duplicate;
+  const editTitle = document.getElementById('edit-title');
+
+  if (
+    taskTitleArr.includes(editTitle.value) &&
+    editTitle.value !== pageInfo.currentTask.title // different from current task
+  ) {
+    duplicate = true;
+  }
+  return duplicate;
+};
+
 const saveEdits = () => {
   // find current task
   for (let i = 0; i < tasksArr.length; i += 1) {
     if (tasksArr[i] === pageInfo.currentTask) {
-      // update the task object and its DOM elements
-      updateTaskObj(tasksArr[i]);
-      updateTaskEl(tasksArr[i], pageInfo.currentElement);
+      if (findDuplicate()) {
+        alert('You already have a task with that title!');
+      } else {
+        // update the task object and its DOM elements
+        updateTaskObj(tasksArr[i]);
+        updateTaskEl(tasksArr[i], pageInfo.currentElement);
 
-      // update storage to reflect changes
-      updateStorage('tasks');
+        // update storage to reflect changes
+        updateStorage('tasks');
+      }
     }
   }
 };
